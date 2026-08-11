@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1c17">
+<title>Sharda Field — Sales &amp; Distribution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rail:#0f1c17; --rail2:#1a2e25; --railtx:#8ba79a;
+  --bg:#f2f1ec; --card:#fff; --line:#dedbd2; --line2:#ecebe4;
+  --ink:#15201c; --ink2:#4a5852; --ink3:#82908a;
+  --green:#0e6b4c; --greenD:#0a5139; --greenL:#e6f1eb;
+  --gold:#a8760c; --goldL:#f9f0d9;
+  --red:#a32e22; --redL:#fbe9e6;
+  --clay:#7a5c3e;
+  --rail-w:214px;
+  --safe:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.45}
+h1,h2,h3,h4{font-family:Archivo,Inter,sans-serif;margin:0;letter-spacing:-.02em}
+button,input,select,textarea{font:inherit;color:inherit}
+.num{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.hide{display:none!important}
+
+/* ---------------- login ---------------- */
+#login{position:fixed;inset:0;z-index:200;background:var(--rail);color:#eef2ef;overflow-y:auto;padding:28px 18px calc(28px + var(--safe))}
+#login .wrap{max-width:430px;margin:0 auto}
+#login .lg{font-family:Archivo;font-weight:800;font-size:30px;letter-spacing:-.035em;line-height:1}
+#login .lg em{font-style:normal;color:#5fbf95}
+#login .sub{color:var(--railtx);font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-top:8px}
+#login .grp{margin-top:26px}
+#login .grp h4{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#5c7a6d;margin-bottom:8px}
+.ucard{display:flex;align-items:center;gap:12px;background:var(--rail2);border:1px solid #24382e;border-radius:11px;padding:12px 14px;margin-bottom:8px;cursor:pointer;width:100%;text-align:left}
+.ucard:hover{border-color:var(--green);background:#1e3529}
+.av{width:38px;height:38px;border-radius:10px;background:var(--green);color:#fff;display:grid;place-items:center;font-family:Archivo;font-weight:700;font-size:14px;flex-shrink:0}
+.av.b{background:#3b5a4a} .av.c{background:var(--clay)} .av.d{background:#2e4f66}
+.ucard b{display:block;font-size:14.5px;font-weight:600}
+.ucard span{font-size:12px;color:var(--railtx)}
+
+/* ---------------- shell ---------------- */
+#app{display:none}
+#app.on{display:block}
+.rail{display:none}
+.topbar{position:sticky;top:0;z-index:60;background:var(--rail);color:#eef2ef;display:flex;align-items:center;gap:10px;padding:9px 13px}
+.topbar .tt{min-width:0;flex:1}
+.topbar .tt b{font-family:Archivo;font-weight:700;font-size:16px;display:block;letter-spacing:-.02em}
+.topbar .tt span{font-size:11px;color:var(--railtx)}
+.syncchip{border:1px solid #24382e;background:var(--rail2);color:var(--railtx);border-radius:999px;
+  padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
+.syncchip.ok{color:#5fbf95;border-color:#2c5a45}
+.syncchip.wait,.syncchip.busy{color:#d9b45c;border-color:#4d4326}
+.syncchip.err{color:#e39a8f;border-color:#5c3630}
+@media(max-width:520px){.syncchip{display:none}}
+.who{display:flex;align-items:center;gap:8px;background:var(--rail2);border:1px solid #24382e;border-radius:999px;padding:4px 5px 4px 11px;cursor:pointer}
+.who b{font-size:12px;font-weight:600;white-space:nowrap}
+.who .av{width:26px;height:26px;border-radius:7px;font-size:11px}
+main{max-width:1240px;margin:0 auto;padding:13px 13px calc(78px + var(--safe))}
+
+/* ---------------- module head ---------------- */
+.mh{display:flex;align-items:flex-end;gap:12px;margin-bottom:13px;flex-wrap:wrap}
+.mh h2{font-size:21px;font-weight:700}
+.eyebrow{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);font-weight:600;margin-bottom:3px}
+.mh .right{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
+.filters{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;margin-bottom:12px}
+.filters select,.filters input{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;flex:0 0 auto}
+
+/* ---------------- primitives ---------------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:14px;margin-bottom:12px}
+.card.flush{padding:0;overflow:hidden}
+.card h3{font-size:13px;font-weight:700;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.ch{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.ch b{font-family:Archivo;font-size:13px;font-weight:700}
+.ch .right{margin-left:auto;display:flex;gap:6px}
+
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;padding:8px 13px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{background:#000}
+.btn.g{background:var(--green);border-color:var(--green)}.btn.g:hover{background:var(--greenD)}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}.btn.ghost:hover{background:var(--line2)}
+.btn.danger{background:#fff;color:var(--red);border-color:var(--red)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.btn.wide{width:100%;padding:13px;font-size:15px}
+.btn:disabled{opacity:.42;cursor:not-allowed}
+
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:5px;background:var(--line2);color:var(--ink2);white-space:nowrap}
+.tag.g{background:var(--greenL);color:var(--greenD)}
+.tag.r{background:var(--redL);color:var(--red)}
+.tag.y{background:var(--goldL);color:var(--gold)}
+.tag.b{background:#e7eef3;color:#2e4f66}
+
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:12px;cursor:default}
+.kpi.link{cursor:pointer}.kpi.link:hover{border-color:var(--green)}
+.kpi .k{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink3);font-weight:700}
+.kpi .v{font-family:"IBM Plex Mono";font-size:24px;font-weight:600;letter-spacing:-.03em;margin-top:5px;line-height:1.05}
+.kpi .v small{font-size:13px;color:var(--ink3);font-weight:500}
+.kpi .s{font-size:11px;color:var(--ink3);margin-top:5px}
+.kpi.acc{border-left:3px solid var(--green)}
+.kpi.warn{border-left:3px solid var(--gold)}
+.kpi.bad{border-left:3px solid var(--red)}
+.up{color:var(--green);font-weight:600}.down{color:var(--red);font-weight:600}
+
+.bar{height:6px;background:var(--line2);border-radius:4px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--green);border-radius:4px}
+.bar i.mid{background:var(--gold)} .bar i.low{background:var(--red)} .bar i.clay{background:var(--clay)}
+
+.row{display:flex;align-items:center;gap:11px;padding:11px 14px;border-bottom:1px solid var(--line2)}
+.row:last-child{border-bottom:0}
+.row .m{flex:1;min-width:0}
+.row .t{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .s{font-size:11.5px;color:var(--ink3);margin-top:2px}
+.row .r{text-align:right;flex-shrink:0}
+.row.click{cursor:pointer}.row.click:hover{background:#faf9f6}
+.stripe{width:3px;align-self:stretch;margin:-11px 8px -11px -14px;background:var(--line2);flex-shrink:0}
+.stripe.ok{background:var(--green)}.stripe.no{background:var(--red)}.stripe.due{background:var(--gold)}.stripe.miss{background:var(--line)}
+
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink3);font-weight:700;
+  padding:9px 11px;background:#f8f7f3;border-bottom:1px solid var(--line);white-space:nowrap;position:sticky;top:0;z-index:2}
+.tbl td{padding:9px 11px;border-bottom:1px solid var(--line2);vertical-align:middle}
+.tbl tbody tr:last-child td{border-bottom:0}
+.tbl tbody tr:hover{background:#faf9f6}
+.tbl .n{text-align:right;font-family:"IBM Plex Mono";font-variant-numeric:tabular-nums}
+.tbl th.n{font-family:Inter}
+.tbl .sub{font-size:11px;color:var(--ink3)}
+.tbl tr.clickable{cursor:pointer}
+
+.f{margin-bottom:11px}
+.f label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:5px}
+.f input,.f select,.f textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:15px}
+.f input:focus,.f select:focus{border-color:var(--green);outline:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink2)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.empty{text-align:center;padding:34px 16px;color:var(--ink3)}
+.empty b{display:block;font-family:Archivo;font-size:15px;color:var(--ink2);margin-bottom:5px}
+.muted{color:var(--ink3);font-size:11.5px}
+.note{background:var(--goldL);border:1px solid #e8d9a8;border-radius:9px;padding:10px 12px;font-size:12.5px;margin-bottom:12px}
+.note.bad{background:var(--redL);border-color:#eecac4;color:#7d2419}
+
+/* ---------------- beat day chips ---------------- */
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
+.day{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 11px;text-align:center;cursor:pointer;min-width:56px}
+.day.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.day b{display:block;font-family:Archivo;font-size:13px}
+.day span{font-size:10px;color:var(--ink3)}.day.on span{color:#9db3aa}
+
+/* ---------------- punch ---------------- */
+.punch{background:var(--rail);color:#eef2ef;border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:13px}
+.punch .m{flex:1;min-width:0}
+.punch .l{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--railtx)}
+.punch .v{font-family:Archivo;font-size:17px;font-weight:700;margin-top:2px}
+.punch .sub{font-size:11.5px;color:var(--railtx);margin-top:3px}
+
+/* ---------------- journey calendar (signature) ---------------- */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal .hd{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-weight:700;text-align:center;padding:4px 0}
+.cell{aspect-ratio:1;border:1px solid var(--line);border-radius:6px;background:#fff;padding:4px;display:flex;flex-direction:column;gap:2px;min-height:52px}
+.cell.sun{background:#f6f5f1;border-style:dashed}
+.cell.fut{opacity:.45}
+.cell .dd{font-family:"IBM Plex Mono";font-size:10.5px;color:var(--ink3);font-weight:500}
+.cell .pb{margin-top:auto;display:flex;gap:2px;align-items:flex-end;height:22px}
+.cell .pb i{flex:1;background:var(--line2);border-radius:1px;align-self:stretch;position:relative;overflow:hidden}
+.cell .pb i b{position:absolute;left:0;right:0;bottom:0;display:block;background:var(--green)}
+.cell .pb i.dev b{background:var(--gold)}
+.cell.today{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+.cell .mini{font-family:"IBM Plex Mono";font-size:9px;color:var(--ink2);line-height:1}
+
+/* ---------------- order lines ---------------- */
+.ol{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.ol:last-child{border-bottom:0}
+.ol .m{flex:1;min-width:0}
+.ol .t{font-weight:600;font-size:13.5px}
+.ol .s{font-size:11px;color:var(--ink3)}
+.ol .sch{font-size:10.5px;color:var(--greenD);font-weight:600;margin-top:2px}
+.step{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-shrink:0;background:#fff}
+.step button{width:33px;height:33px;border:0;background:#fff;font-size:17px;font-weight:600;cursor:pointer;color:var(--ink2)}
+.step button:active{background:var(--line2)}
+.step input{width:46px;height:33px;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);text-align:center;font-family:"IBM Plex Mono";font-weight:600;font-size:15px}
+.totbar{position:sticky;bottom:calc(72px + var(--safe));background:var(--rail);color:#fff;border-radius:11px;padding:11px 14px;display:flex;align-items:center;gap:12px;margin-top:12px;z-index:20}
+.totbar .l{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--railtx)}
+.totbar .v{font-family:"IBM Plex Mono";font-size:19px;font-weight:600}
+.totbar .sv{font-size:11px;color:#5fbf95}
+.totbar button{margin-left:auto}
+
+/* ---------------- parchi ---------------- */
+.parchi{background:#fffdf7;border:1px solid var(--line);border-radius:6px;padding:15px 15px 24px;position:relative;
+  background-image:repeating-linear-gradient(transparent,transparent 25px,#f1ede1 25px,#f1ede1 26px);background-position:0 62px}
+.parchi:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:9px;background:radial-gradient(circle at 5px -2px,transparent 5px,var(--bg) 5px);background-size:10px 10px}
+.parchi .ph{display:flex;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:7px;margin-bottom:9px}
+.parchi .ph b{font-family:Archivo;font-weight:800;font-size:15px}
+.parchi .ph span{margin-left:auto;font-family:"IBM Plex Mono";font-size:10.5px;color:var(--ink2)}
+.parchi .pl{display:flex;font-family:"IBM Plex Mono";font-size:12px;line-height:26px}
+.parchi .pl .d{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:6px}
+.parchi .pl .q{width:52px;text-align:right}
+.parchi .pl .a{width:76px;text-align:right}
+.parchi .pl.free .d{color:var(--greenD)}
+.parchi .pt{display:flex;font-family:"IBM Plex Mono";font-size:12px;line-height:24px;border-top:2px solid var(--ink);margin-top:5px;padding-top:6px}
+.parchi .pt .a{width:76px;text-align:right;margin-left:auto}
+.parchi .pt.big{font-weight:700;font-size:14px}
+.stamp{position:absolute;right:16px;bottom:38px;transform:rotate(-11deg);border:2.5px solid var(--green);color:var(--green);
+  border-radius:6px;padding:3px 9px;font-family:Archivo;font-weight:800;font-size:14px;letter-spacing:.09em;opacity:.8}
+
+/* ---------------- sheet ---------------- */
+.backdrop{position:fixed;inset:0;background:rgba(15,28,23,.55);z-index:120;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:580px;max-height:93vh;overflow-y:auto;border-radius:15px 15px 0 0;padding:15px 15px calc(20px + var(--safe))}
+.sheet-h{display:flex;align-items:center;gap:10px;margin-bottom:13px;position:sticky;top:-15px;background:var(--bg);padding:5px 0 8px;z-index:3}
+.sheet-h h3{font-size:17px;font-weight:700;flex:1}
+.x{border:0;background:var(--line2);width:30px;height:30px;border-radius:50%;font-size:17px;cursor:pointer;line-height:1}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + var(--safe));z-index:150;background:var(--rail);color:#fff;
+  padding:10px 18px;border-radius:999px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+
+/* ---------------- bottom nav ---------------- */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:80;background:#fff;border-top:1px solid var(--line);display:flex;padding:5px 3px calc(5px + var(--safe))}
+nav button{flex:1;border:0;background:transparent;cursor:pointer;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink3);border-radius:8px}
+nav button b{font-size:10px;font-weight:600}
+nav button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--greenD)}nav button.on svg{stroke-width:2.2}
+
+/* ---------------- desktop rail ---------------- */
+@media(min-width:900px){
+  body{padding:0}
+  nav{display:none}
+  .rail{display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;width:var(--rail-w);background:var(--rail);color:#eef2ef;z-index:70;overflow-y:auto;padding:14px 10px}
+  .rail .lg{font-family:Archivo;font-weight:800;font-size:17px;letter-spacing:-.03em;padding:0 8px 3px}
+  .rail .lg em{font-style:normal;color:#5fbf95}
+  .rail .sub{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#5c7a6d;padding:0 8px 14px}
+  .rail h5{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#54705f;margin:13px 8px 5px;font-weight:700}
+  .rail a{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:8px;color:#b9cdc3;font-size:13px;font-weight:500;cursor:pointer;text-decoration:none}
+  .rail a:hover{background:var(--rail2);color:#fff}
+  .rail a.on{background:var(--green);color:#fff;font-weight:600}
+  .rail a svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0}
+  .rail .foot{margin-top:auto;padding-top:12px}
+  #app.on{padding-left:var(--rail-w)}
+  .topbar{padding:11px 20px}
+  main{padding:16px 20px 40px}
+  .kpis{grid-template-columns:repeat(4,1fr)}
+  .totbar{bottom:16px}
+  .cell{min-height:64px}
+}
+@media(min-width:1200px){ .kpis.k5{grid-template-columns:repeat(5,1fr)} }
+@media print{ .rail,nav,.topbar,.btn,.no-print{display:none!important} body{background:#fff} #app.on{padding-left:0} }
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="login"></div>
+<div id="app">
+  <aside class="rail"></aside>
+  <header class="topbar"></header>
+  <main id="main"></main>
+  <nav></nav>
+</div>
+<script>
+/* ==================== storage ==================== */
+const KEY='shardafield:v2';
+const Store={
+  async load(){
+    try{ if(window.storage){ const r=await window.storage.get(KEY); return r?JSON.parse(r.value):null; } }catch(e){ if(window.storage) return null; }
+    try{ const v=localStorage.getItem(KEY); return v?JSON.parse(v):null; }catch(e){}
+    return null;
+  },
+  async save(d){
+    const s=JSON.stringify(d);
+    try{ if(window.storage){ await window.storage.set(KEY,s); return true; } }catch(e){}
+    try{ localStorage.setItem(KEY,s); return true; }catch(e){}
+    return false;
+  }
+};
+
+/* ==================== helpers ==================== */
+const uid=p=>p+'_'+Math.random().toString(36).slice(2,9);
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat'];
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const iso=d=>d.toISOString().slice(0,10);
+const today=()=>iso(new Date());
+const dayName=d=>['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(d+'T00:00').getDay()];
+const daysAgo=n=>{const d=new Date();d.setDate(d.getDate()-n);return iso(d);};
+const dDiff=(a,b)=>Math.round((new Date(b+'T00:00')-new Date(a+'T00:00'))/864e5);
+const monthOf=d=>d.slice(0,7);
+const inr=n=>'₹'+Math.round(n||0).toLocaleString('en-IN');
+const inrS=n=>{n=Math.round(n||0);const s=n<0?'-':'';n=Math.abs(n);
+  if(n>=1e7)return s+'₹'+(n/1e7).toFixed(2)+'Cr'; if(n>=1e5)return s+'₹'+(n/1e5).toFixed(2)+'L';
+  if(n>=1000)return s+'₹'+(n/1000).toFixed(1)+'K'; return s+'₹'+n;};
+const pct=(a,b)=>b?Math.round(a/b*100):0;
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const byId=(arr,id)=>(arr||[]).find(x=>x.id===id)||{};
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const ri=(a,b)=>Math.floor(rnd(a,b+1));
+const fmtTime=t=>t?t.slice(11,16):'—';
+
+/* ==================== seed ==================== */
+function seed(){
+  const skus=[
+    {id:'s1',name:'Chakki Atta',pack:'10 kg handle bag',kg:10,mrp:430,ptr:398,ptd:379,cat:'Atta'},
+    {id:'s2',name:'Chakki Atta',pack:'5 kg handle bag',kg:5,mrp:220,ptr:204,ptd:194,cat:'Atta'},
+    {id:'s3',name:'Chakki Atta',pack:'10 kg pouch',kg:10,mrp:420,ptr:389,ptd:370,cat:'Atta'},
+    {id:'s4',name:'Chakki Atta',pack:'5 kg pouch',kg:5,mrp:215,ptr:199,ptd:190,cat:'Atta'},
+    {id:'s5',name:'Chakki Atta',pack:'1 kg pouch',kg:1,mrp:49,ptr:45,ptd:43,cat:'Atta'},
+    {id:'s6',name:'Maida',pack:'1 kg pouch',kg:1,mrp:46,ptr:42,ptd:40,cat:'Refined'},
+    {id:'s7',name:'Suji',pack:'1 kg pouch',kg:1,mrp:52,ptr:48,ptd:46,cat:'Refined'},
+    {id:'s8',name:'Besan',pack:'1 kg pouch',kg:1,mrp:95,ptr:88,ptd:84,cat:'Besan'}
+  ];
+  const asms=[
+    {id:'a1',name:'Sanjay Dubey',area:'Kanpur',phone:'9415111101'},
+    {id:'a2',name:'Rakesh Singh',area:'Prayagraj',phone:'9415111102'}
+  ];
+  const dists=[
+    {id:'d1',name:'Agarwal Traders',area:'Kanpur City',phone:'9415000001',creditDays:14,asmId:'a1'},
+    {id:'d2',name:'Shri Balaji Agency',area:'Kanpur Dehat',phone:'9415000002',creditDays:21,asmId:'a1'},
+    {id:'d3',name:'Prayag Distributors',area:'Prayagraj',phone:'9415000003',creditDays:14,asmId:'a2'}
+  ];
+  const men=[
+    {id:'m1',name:'Ramesh Yadav',phone:'9000000011',area:'Kanpur City',asmId:'a1'},
+    {id:'m2',name:'Sunil Verma',phone:'9000000012',area:'Kanpur Dehat',asmId:'a1'},
+    {id:'m3',name:'Ajay Mishra',phone:'9000000013',area:'Prayagraj',asmId:'a2'}
+  ];
+  const users=[
+    {id:'u0',name:'Prakhar',role:'admin',ref:null,title:'Business head'},
+    {id:'u1',name:'Sanjay Dubey',role:'asm',ref:'a1',title:'ASM — Kanpur'},
+    {id:'u2',name:'Rakesh Singh',role:'asm',ref:'a2',title:'ASM — Prayagraj'},
+    {id:'u3',name:'Ramesh Yadav',role:'salesman',ref:'m1',title:'SO — Kanpur City'},
+    {id:'u4',name:'Sunil Verma',role:'salesman',ref:'m2',title:'SO — Kanpur Dehat'},
+    {id:'u5',name:'Ajay Mishra',role:'salesman',ref:'m3',title:'SO — Prayagraj'},
+    {id:'u6',name:'Agarwal Traders',role:'distributor',ref:'d1',title:'Distributor — Kanpur City'},
+    {id:'u7',name:'Shri Balaji Agency',role:'distributor',ref:'d2',title:'Distributor — Kanpur Dehat'},
+    {id:'u8',name:'Prayag Distributors',role:'distributor',ref:'d3',title:'Distributor — Prayagraj'}
+  ];
+  const rows=[
+    ['Sharma Kirana Store','Govind Nagar','kirana','d1','m1','Mon',60000],
+    ['Jai Maa Provision','Govind Nagar','kirana','d1','m1','Mon',40000],
+    ['New Bharat Store','Kidwai Nagar','general','d1','m1','Mon',50000],
+    ['Gupta General Store','Kidwai Nagar','kirana','d1','m1','Tue',35000],
+    ['Balaji Super Bazaar','Swaroop Nagar','selfservice','d1','m1','Tue',120000],
+    ['Annapurna Trading','Naubasta','wholesale','d1','m1','Wed',180000],
+    ['Verma Kirana','Barra','kirana','d1','m1','Fri',30000],
+    ['Om Sai Provision','Barra','kirana','d1','m1','Fri',35000],
+    ['Lakshmi Store','Panki','kirana','d1','m1','Sat',40000],
+    ['Shubham General Store','Panki','general','d1','m1','Sat',55000],
+    ['Shiv Kirana','Rania','kirana','d2','m2','Mon',30000],
+    ['Yadav Store','Rania','kirana','d2','m2','Mon',25000],
+    ['Krishna Provision','Akbarpur','kirana','d2','m2','Tue',35000],
+    ['Sai Traders','Akbarpur','wholesale','d2','m2','Wed',150000],
+    ['Maa Vaishno Store','Pukhrayan','kirana','d2','m2','Thu',30000],
+    ['Ram Janki Kirana','Sikandra','kirana','d2','m2','Fri',28000],
+    ['Bharat Provision','Bhognipur','kirana','d2','m2','Sat',26000],
+    ['Mishra Trading','Sikandra','wholesale','d2','m2','Sat',140000],
+    ['Ganesh Kirana','Civil Lines','kirana','d3','m3','Mon',45000],
+    ['Prayag Fresh Mart','Civil Lines','selfservice','d3','m3','Tue',110000],
+    ['Tiwari Store','Naini','kirana','d3','m3','Wed',32000],
+    ['Sangam Provision','Jhunsi','kirana','d3','m3','Thu',30000],
+    ['Allahabad Kirana','Katra','kirana','d3','m3','Fri',38000],
+    ['Yamuna Store','Naini','kirana','d3','m3','Sat',27000],
+    ['Hanuman Provision','Jhunsi','kirana','d3','m3','Sat',29000]
+  ];
+  const outlets=rows.map((n,i)=>({id:'o'+(i+1),name:n[0],owner:'',phone:'94150000'+(10+i),area:n[1],type:n[2],
+    distId:n[3],salesmanId:n[4],beat:n[5],creditLimit:n[6],lat:null,lng:null,gst:'',created:daysAgo(90),status:'active'}));
+
+  const schemes=[
+    {id:'sc1',name:'Atta 10 kg — 10+1 free',type:'freegoods',skuIds:['s1','s3'],min:10,free:1,active:true,from:daysAgo(60),to:daysAgo(-30)},
+    {id:'sc2',name:'5 kg pouch — 5% on 12+',type:'qty',skuIds:['s4'],min:12,pct:5,active:true,from:daysAgo(60),to:daysAgo(-30)},
+    {id:'sc3',name:'Bill value ₹15,000 — 2%',type:'value',skuIds:[],min:15000,pct:2,active:true,from:daysAgo(60),to:daysAgo(-30)},
+    {id:'sc4',name:'Besan launch — flat 4%',type:'flat',skuIds:['s8'],min:1,pct:4,active:true,from:daysAgo(45),to:daysAgo(-15)},
+    {id:'sc5',name:'Suji monsoon — 3% on 24+',type:'qty',skuIds:['s7'],min:24,pct:3,active:false,from:daysAgo(120),to:daysAgo(70)}
+  ];
+
+  const orders=[],visits=[],primary=[],invoices=[],collections=[],attendance=[],pjp=[];
+
+  for(let d=90;d>=0;d--){
+    const date=daysAgo(d), dn=dayName(date);
+    if(dn==='Sun')continue;
+    men.forEach(m=>{
+      const plan=outlets.filter(o=>o.beat===dn&&o.salesmanId===m.id);
+      if(!plan.length)return;
+      pjp.push({id:uid('pj'),salesmanId:m.id,date,outletIds:plan.map(o=>o.id)});
+      if(d===0)return; // today left open to work live
+      const worked=Math.random()<0.94;
+      if(!worked)return;
+      const inT=date+'T0'+ri(8,9)+':'+String(ri(10,59)).padStart(2,'0');
+      const outT=date+'T1'+ri(7,9)+':'+String(ri(0,59)).padStart(2,'0');
+      attendance.push({id:uid('at'),date,salesmanId:m.id,inTs:inT,outTs:outT,km:ri(35,95),
+        inLat:+rnd(26.3,26.5).toFixed(4),inLng:+rnd(80.2,80.4).toFixed(4)});
+      plan.forEach(o=>{
+        if(Math.random()<0.08)return; // missed call
+        const took=Math.random()<0.74;
+        visits.push({id:uid('v'),date,outletId:o.id,salesmanId:m.id,status:took?'order':'noorder',
+          ts:date+'T'+String(ri(9,17)).padStart(2,'0')+':'+String(ri(0,59)).padStart(2,'0')});
+        if(!took)return;
+        const lines=[];
+        const big=o.type==='wholesale'||o.type==='selfservice';
+        skus.forEach(s=>{
+          if(Math.random()>(s.cat==='Atta'?0.55:0.32))return;
+          const base=s.kg>=5?(big?ri(8,26):ri(2,9)):(big?ri(18,60):ri(4,18));
+          lines.push({skuId:s.id,qty:base,rate:s.ptr});
+        });
+        if(!lines.length)lines.push({skuId:'s1',qty:big?12:4,rate:398});
+        const calc=applySchemes(lines,skus,schemes,date);
+        orders.push({id:uid('or'),date,outletId:o.id,salesmanId:m.id,distId:o.distId,
+          lines:calc.lines,gross:calc.gross,disc:calc.disc,total:calc.net,schemes:calc.applied,status:'booked'});
+      });
+    });
+  }
+
+  // invoices from orders + collections
+  orders.forEach(o=>{
+    const dd=byId(dists,o.distId).creditDays||14;
+    const inv={id:uid('in'),date:o.date,outletId:o.outletId,distId:o.distId,orderId:o.id,
+      amount:Math.round(o.total),due:iso(new Date(new Date(o.date+'T00:00').getTime()+dd*864e5)),paid:0};
+    invoices.push(inv);
+  });
+  invoices.forEach(inv=>{
+    const age=dDiff(inv.date,today());
+    let payFrac=0;
+    if(age>75)payFrac=Math.random()<0.94?1:0;
+    else if(age>45)payFrac=Math.random()<0.88?1:(Math.random()<0.4?0.6:0);
+    else if(age>25)payFrac=Math.random()<0.8?1:(Math.random()<0.5?0.5:0);
+    else if(age>12)payFrac=Math.random()<0.5?1:0;
+    if(payFrac>0){
+      const amt=Math.round(inv.amount*payFrac);
+      inv.paid=amt;
+      collections.push({id:uid('co'),invoiceId:inv.id,outletId:inv.outletId,date:iso(new Date(new Date(inv.date+'T00:00').getTime()+ri(8,Math.max(9,age))*864e5)),
+        amount:amt,mode:['cash','upi','cheque'][ri(0,2)],salesmanId:byId(outlets,inv.outletId).salesmanId});
+    }
+  });
+
+  // primary billing sized off secondary
+  const wk={};
+  orders.forEach(o=>{const w=Math.floor(dDiff(o.date,today())/7);
+    o.lines.forEach(l=>{const k=o.distId+'|'+l.skuId+'|'+w;wk[k]=(wk[k]||0)+l.qty+(l.free||0);});});
+  for(let w=13;w>=0;w--){
+    dists.forEach(dd=>{
+      const lines=[];
+      skus.forEach(s=>{const b=wk[dd.id+'|'+s.id+'|'+w]||0;if(!b)return;
+        lines.push({skuId:s.id,qty:Math.max(1,Math.round(b*rnd(1.02,1.4))),rate:s.ptd});});
+      if(lines.length)primary.push({id:uid('pi'),date:daysAgo(w*7+1),distId:dd.id,lines,
+        total:lines.reduce((a,l)=>a+l.qty*l.rate,0)});
+    });
+  }
+
+  // targets for current + previous month
+  const targets=[];
+  [monthOf(today()),monthOf(daysAgo(35))].forEach(mo=>{
+    men.forEach(m=>{
+      const base=orders.filter(o=>o.salesmanId===m.id&&o.date>=daysAgo(30)).reduce((a,o)=>a+o.total,0);
+      targets.push({id:uid('tg'),month:mo,salesmanId:m.id,skuId:null,value:Math.round(base*rnd(1.05,1.25)/1000)*1000,qty:0});
+    });
+    skus.forEach(s=>{
+      const q=orders.filter(o=>o.date>=daysAgo(30)).reduce((a,o)=>a+o.lines.filter(l=>l.skuId===s.id).reduce((b,l)=>b+l.qty,0),0);
+      targets.push({id:uid('tg'),month:mo,salesmanId:null,skuId:s.id,value:0,qty:Math.round(q*rnd(1.0,1.3))});
+    });
+  });
+
+  return {v:2,skus,asms,distributors:dists,salesmen:men,users,outlets,schemes,targets,
+    orders,visits,primary,invoices,collections,attendance,pjp,
+    settings:{brand:'Sharda Bhog',company:'Sharda Fresh Foods Pvt Ltd'}};
+}
+
+/* ==================== schemes engine ==================== */
+function applySchemes(lines,skus,schemes,date){
+  const act=schemes.filter(s=>s.active&&(!s.from||s.from<=date)&&(!s.to||s.to>=date));
+  const out=lines.map(l=>({...l,disc:0,free:0,scheme:null}));
+  const applied=[];
+  out.forEach(l=>{
+    act.forEach(s=>{
+      if(!s.skuIds||!s.skuIds.length||!s.skuIds.includes(l.skuId))return;
+      if(s.type==='freegoods'&&l.qty>=s.min){
+        const f=Math.floor(l.qty/s.min)*s.free;
+        if(f>l.free){l.free=f;l.scheme=s.name;if(!applied.includes(s.name))applied.push(s.name);}
+      }
+      if(s.type==='qty'&&l.qty>=s.min){
+        const d=Math.round(l.qty*l.rate*s.pct/100);
+        if(d>l.disc){l.disc=d;l.scheme=s.name;if(!applied.includes(s.name))applied.push(s.name);}
+      }
+      if(s.type==='flat'){
+        const d=Math.round(l.qty*l.rate*s.pct/100);
+        if(d>l.disc){l.disc=d;l.scheme=s.name;if(!applied.includes(s.name))applied.push(s.name);}
+      }
+    });
+  });
+  const gross=out.reduce((a,l)=>a+l.qty*l.rate,0);
+  let disc=out.reduce((a,l)=>a+l.disc,0);
+  act.forEach(s=>{
+    if(s.type==='value'&&gross>=s.min){
+      disc+=Math.round(gross*s.pct/100);
+      if(!applied.includes(s.name))applied.push(s.name);
+    }
+  });
+  return {lines:out,gross,disc,net:gross-disc,applied};
+}
+
+/* ==================== scoping ==================== */
+function scopeOf(DB,user){
+  if(!user||user.role==='admin')return {men:DB.salesmen.map(m=>m.id),dists:DB.distributors.map(d=>d.id),outlets:DB.outlets.map(o=>o.id),all:true};
+  if(user.role==='asm'){
+    const men=DB.salesmen.filter(m=>m.asmId===user.ref).map(m=>m.id);
+    const dists=DB.distributors.filter(d=>d.asmId===user.ref).map(d=>d.id);
+    return {men,dists,outlets:DB.outlets.filter(o=>men.includes(o.salesmanId)).map(o=>o.id)};
+  }
+  if(user.role==='salesman')
+    return {men:[user.ref],dists:[...new Set(DB.outlets.filter(o=>o.salesmanId===user.ref).map(o=>o.distId))],
+            outlets:DB.outlets.filter(o=>o.salesmanId===user.ref).map(o=>o.id)};
+  return {men:[...new Set(DB.outlets.filter(o=>o.distId===user.ref).map(o=>o.salesmanId))],dists:[user.ref],
+          outlets:DB.outlets.filter(o=>o.distId===user.ref).map(o=>o.id)};
+}
+const inScope=(sc,o)=>sc.all||sc.outlets.includes(o.outletId);
+
+/* ==================== finance ==================== */
+function outstanding(DB,filt){
+  const buckets={b0:0,b15:0,b30:0,b60:0},list=[];
+  DB.invoices.forEach(i=>{
+    if(filt&&!filt(i))return;
+    const bal=i.amount-i.paid; if(bal<=0)return;
+    const age=dDiff(i.date,today());
+    if(age<=15)buckets.b0+=bal; else if(age<=30)buckets.b15+=bal;
+    else if(age<=60)buckets.b30+=bal; else buckets.b60+=bal;
+    list.push({...i,bal,age,overdue:i.due<today()});
+  });
+  const total=buckets.b0+buckets.b15+buckets.b30+buckets.b60;
+  return {buckets,total,list:list.sort((a,b)=>b.age-a.age)};
+}
+const outletDue=(DB,outletId)=>DB.invoices.filter(i=>i.outletId===outletId).reduce((a,i)=>a+(i.amount-i.paid),0);
+
+/* ==================== stock ==================== */
+function stockOf(DB,distId){
+  const inQ={},outQ={};
+  DB.primary.filter(p=>p.distId===distId).forEach(p=>p.lines.forEach(l=>inQ[l.skuId]=(inQ[l.skuId]||0)+l.qty));
+  DB.orders.filter(o=>o.distId===distId).forEach(o=>o.lines.forEach(l=>outQ[l.skuId]=(outQ[l.skuId]||0)+l.qty+(l.free||0)));
+  return DB.skus.map(s=>{
+    const i=inQ[s.id]||0,o=outQ[s.id]||0,close=i-o;
+    const l30=DB.orders.filter(x=>x.distId===distId&&x.date>=daysAgo(30))
+      .reduce((a,x)=>a+x.lines.filter(l=>l.skuId===s.id).reduce((b,l)=>b+l.qty+(l.free||0),0),0);
+    const rate=l30/30;
+    return {sku:s,inQ:i,outQ:o,close,rate,cover:rate>0?close/rate:(close>0?99:0)};
+  });
+}
+
+/* ==================== targets ==================== */
+function targetProgress(DB,month,salesmanId){
+  const t=DB.targets.find(x=>x.month===month&&x.salesmanId===salesmanId);
+  const tgt=t?t.value:0;
+  const ach=DB.orders.filter(o=>monthOf(o.date)===month&&o.salesmanId===salesmanId).reduce((a,o)=>a+o.total,0);
+  const now=new Date(), first=new Date(now.getFullYear(),now.getMonth(),1);
+  const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  const gone=month===monthOf(today())?Math.max(1,Math.round((now-first)/864e5)+1):dim;
+  const proj=Math.round(ach/gone*dim);
+  return {tgt,ach,pc:pct(ach,tgt),proj,gone,dim,left:dim-gone,need:Math.max(0,tgt-ach),
+    perDay:dim-gone>0?Math.max(0,tgt-ach)/(dim-gone):0};
+}
+
+/* ==================== attendance / pjp ==================== */
+function attToday(DB,salesmanId){ return DB.attendance.find(a=>a.date===today()&&a.salesmanId===salesmanId)||null; }
+function pjpFor(DB,salesmanId,date){
+  const p=DB.pjp.find(x=>x.salesmanId===salesmanId&&x.date===date);
+  if(p)return p.outletIds;
+  return DB.outlets.filter(o=>o.salesmanId===salesmanId&&o.beat===dayName(date)).map(o=>o.id);
+}
+function pjpMonth(DB,salesmanId,month){
+  const out=[];
+  const [y,m]=month.split('-').map(Number);
+  const dim=new Date(y,m,0).getDate();
+  for(let i=1;i<=dim;i++){
+    const date=`${y}-${String(m).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+    if(dayName(date)==='Sun'){out.push({date,sun:true,plan:0,done:0,dev:0});continue;}
+    const plan=pjpFor(DB,salesmanId,date);
+    const vs=DB.visits.filter(v=>v.date===date&&v.salesmanId===salesmanId);
+    const done=vs.filter(v=>plan.includes(v.outletId)).length;
+    const dev=vs.filter(v=>!plan.includes(v.outletId)).length;
+    out.push({date,d:i,plan:plan.length,done,dev,future:date>today()});
+  }
+  return out;
+}
+
+/* ==================== claims ==================== */
+function claims(DB,month){
+  return DB.distributors.map(d=>{
+    const os=DB.orders.filter(o=>o.distId===d.id&&monthOf(o.date)===month);
+    const disc=os.reduce((a,o)=>a+(o.disc||0),0);
+    const freeVal=os.reduce((a,o)=>a+o.lines.reduce((b,l)=>b+(l.free||0)*byId(DB.skus,l.skuId).ptd,0),0);
+    return {dist:d,orders:os.length,disc,freeVal,total:disc+freeVal,
+      gross:os.reduce((a,o)=>a+o.gross,0)};
+  });
+}
+/* ==================== sync engine ====================
+   Offline first. Every local write is recorded in an outbox; the outbox is
+   flushed to the API when a connection is available, then changes from the
+   server are pulled and merged. With no API configured the app behaves exactly
+   as it did before — everything stays on the device.
+
+   Doc types map to arrays on DB:
+     outlet sku scheme salesman distributor asm target
+     order visit invoice collection attendance primary
+*/
+const TYPE_LIST={outlet:'outlets',sku:'skus',scheme:'schemes',salesman:'salesmen',
+  distributor:'distributors',asm:'asms',target:'targets',order:'orders',visit:'visits',
+  invoice:'invoices',collection:'collections',attendance:'attendance',primary:'primary'};
+const LIST_TYPE=Object.fromEntries(Object.entries(TYPE_LIST).map(([t,l])=>[l,t]));
+
+const Sync={
+  get cfg(){ return (DB&&DB.sync)||{url:'',token:'',user:null,last:0}; },
+  set cfg(v){ DB.sync=v; },
+  outbox(){ DB.outbox=DB.outbox||[]; return DB.outbox; },
+  busy:false, lastError:null, online:true,
+
+  configured(){ return !!(this.cfg.url&&this.cfg.token); },
+
+  /** Record a local change so it reaches the server on the next flush. */
+  track(type,obj,deleted){
+    if(!obj||!obj.id)return obj;
+    const ob=this.outbox();
+    const i=ob.findIndex(o=>o.id===obj.id);
+    const op={id:obj.id,type,data:obj,deleted:!!deleted};
+    if(i>=0)ob[i]=op; else ob.push(op);
+    return obj;
+  },
+
+  async call(path,opts){
+    const c=this.cfg;
+    const r=await fetch(c.url.replace(/\/$/,'')+path,{
+      ...opts, headers:{'content-type':'application/json',
+        ...(c.token?{authorization:'Bearer '+c.token}:{}) ,...(opts&&opts.headers||{})}});
+    let body=null; try{ body=await r.json(); }catch(e){}
+    if(!r.ok)throw new Error((body&&body.error)||('Server said '+r.status));
+    return body;
+  },
+
+  async login(url,userId,pin){
+    const base=url.replace(/\/$/,'');
+    const r=await fetch(base+'/api/login',{method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({userId,pin})});
+    const body=await r.json();
+    if(!r.ok)throw new Error(body.error||'Sign in failed');
+    this.cfg={url:base,token:body.token,user:body.user,last:0};
+    await save();
+    return body.user;
+  },
+
+  signOut(){ this.cfg={url:this.cfg.url,token:'',user:null,last:0}; save(); },
+
+  /** Push the outbox, then pull anything newer than our watermark. */
+  async run(silent){
+    if(!this.configured()||this.busy)return;
+    this.busy=true; this.lastError=null; paintSync();
+    try{
+      const ob=this.outbox();
+      while(ob.length){
+        const batch=ob.slice(0,200);
+        await this.call('/api/push',{method:'POST',body:JSON.stringify({ops:batch})});
+        ob.splice(0,batch.length);
+        await save();
+      }
+      const res=await this.call('/api/pull?since='+(this.cfg.last||0));
+      if(res.docs&&res.docs.length)this.merge(res.docs);
+      const c=this.cfg; c.last=res.now; this.cfg=c;
+      this.online=true;
+      await save();
+      if(!silent)toast('Synced');
+      render();
+    }catch(e){
+      this.lastError=e.message;
+      this.online=!/failed|network|fetch/i.test(e.message);
+      if(!silent)toast(e.message);
+      paintSync();
+    }finally{ this.busy=false; paintSync(); }
+  },
+
+  /** Server wins on conflict — its updated_at is authoritative. */
+  merge(docs){
+    docs.forEach(d=>{
+      const list=TYPE_LIST[d.type]; if(!list)return;
+      DB[list]=DB[list]||[];
+      const i=DB[list].findIndex(x=>x.id===d.id);
+      if(d.deleted){ if(i>=0)DB[list].splice(i,1); return; }
+      if(i>=0)DB[list][i]=d.data; else DB[list].push(d.data);
+    });
+  },
+
+  /** One-time upload of everything currently on this device. */
+  async seedServer(){
+    const ops=[];
+    Object.entries(TYPE_LIST).forEach(([type,list])=>
+      (DB[list]||[]).forEach(o=>{ if(o&&o.id)ops.push({id:o.id,type,data:o,deleted:false}); }));
+    let done=0;
+    for(let i=0;i<ops.length;i+=200){
+      await this.call('/api/push',{method:'POST',body:JSON.stringify({ops:ops.slice(i,i+200)})});
+      done+=Math.min(200,ops.length-i);
+      toast('Uploaded '+done+' of '+ops.length);
+    }
+    const res=await this.call('/api/pull?since=0');
+    const c=this.cfg; c.last=res.now; this.cfg=c; await save();
+    return ops.length;
+  }
+};
+
+/** Shorthand used at every mutation site. */
+function put(type,obj,deleted){ return Sync.track(type,obj,deleted); }
+
+/* ---- status chip in the top bar ---- */
+function syncState(){
+  if(!Sync.configured())return {k:'off',t:'On this device'};
+  if(Sync.busy)return {k:'busy',t:'Syncing…'};
+  const n=(DB.outbox||[]).length;
+  if(Sync.lastError)return {k:'err',t:n?n+' waiting':'Sync failed'};
+  if(n)return {k:'wait',t:n+' waiting'};
+  return {k:'ok',t:'Synced'};
+}
+function paintSync(){
+  const el=document.getElementById('syncChip'); if(!el)return;
+  const s=syncState();
+  el.className='syncchip '+s.k;
+  el.textContent=s.t;
+}
+
+/* ---- settings sheet ---- */
+function openSync(){
+  const c=Sync.cfg, s=syncState();
+  const body=`
+    <div class="note ${s.k==='err'?'bad':''}"><b>${Sync.configured()?(c.user?esc(c.user.name)+' — signed in':'Connected'):'Working offline'}</b><br>
+      ${Sync.configured()
+        ? `Data syncs with <span class="num">${esc(c.url)}</span>. ${(DB.outbox||[]).length} change(s) waiting to upload.${Sync.lastError?'<br>Last error: '+esc(Sync.lastError):''}`
+        : 'Everything is stored on this device only. Connect a server so orders from every phone land in one place.'}</div>
+    <div class="f"><label>API address</label><input id="sUrl" value="${esc(c.url)}" placeholder="https://sharda-field-api.workers.dev"></div>
+    <div class="grid2">
+      <div class="f"><label>User</label><select id="sUser">${DB.users.map(u=>
+        `<option value="${u.id}" ${c.user&&c.user.id===u.id?'selected':''}>${esc(u.name)}</option>`).join('')}</select></div>
+      <div class="f"><label>PIN</label><input id="sPin" type="password" inputmode="numeric" placeholder="••••"></div></div>
+    <button class="btn g wide" id="sLogin">${Sync.configured()?'Sign in again':'Connect'}</button>
+    ${Sync.configured()?`
+      <div class="grid2" style="margin-top:8px">
+        <button class="btn ghost" id="sNow">Sync now</button>
+        <button class="btn ghost" id="sOut">Disconnect</button></div>
+      <button class="btn ghost wide" id="sSeed" style="margin-top:8px">Upload everything on this device</button>
+      <div class="muted" style="margin-top:6px">Run the upload once, from the office device that holds the real data. Doing it from a phone would push that phone's copy over everyone else's.</div>`:''}
+    <div class="card" style="margin-top:12px"><h3>How syncing behaves</h3>
+      <div class="muted" style="line-height:1.6">Orders, visits, collections and attendance are saved on the phone first, so the app keeps working with no signal. They upload when a connection returns. If two people edit the same record, the later write wins.</div></div>`;
+  sheet('Server connection',body,b=>{
+    b.querySelector('#sLogin').onclick=async()=>{
+      const url=b.querySelector('#sUrl').value.trim();
+      if(!url)return toast('Enter the API address');
+      try{
+        const u=await Sync.login(url,b.querySelector('#sUser').value,b.querySelector('#sPin').value);
+        closeSheet(); toast('Signed in as '+u.name); Sync.run(true);
+      }catch(e){ toast(e.message); }
+    };
+    const n=b.querySelector('#sNow'); if(n)n.onclick=()=>{closeSheet();Sync.run();};
+    const o=b.querySelector('#sOut'); if(o)o.onclick=()=>{Sync.signOut();closeSheet();render();toast('Disconnected');};
+    const sd=b.querySelector('#sSeed'); if(sd)sd.onclick=async()=>{
+      if(!confirm('Upload every record on this device to the server?'))return;
+      try{ const n=await Sync.seedServer(); closeSheet(); toast(n+' records uploaded'); }
+      catch(e){ toast(e.message); }};
+  });
+}
+/* ==================== app state ==================== */
+let DB=null;
+const S={user:null,tab:'dash',day:dayName(today()),me:null,dist:null,month:monthOf(today()),q:'',setup:'skus',range:30};
+const save=()=>Store.save(DB);
+const sc=()=>scopeOf(DB,S.user);
+const myMen=()=>DB.salesmen.filter(m=>sc().men.includes(m.id));
+const myDists=()=>DB.distributors.filter(d=>sc().dists.includes(d.id));
+const myOutlets=()=>DB.outlets.filter(o=>sc().outlets.includes(o.id));
+const myOrders=()=>{const s=sc();let l=DB.orders.filter(o=>s.outlets.includes(o.outletId));
+  if(S.me)l=l.filter(o=>o.salesmanId===S.me); if(S.dist)l=l.filter(o=>o.distId===S.dist); return l;};
+const focusMan=()=>S.user.role==='salesman'?S.user.ref:(S.me||myMen()[0]?.id);
+const focusDist=()=>S.user.role==='distributor'?S.user.ref:(S.dist||myDists()[0]?.id);
+
+/* ==================== nav config ==================== */
+const IC={
+  dash:'<rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/>',
+  beat:'<path d="M3 7h18M7 3v4M17 3v4"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 13h3"/>',
+  att:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  pjp:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',
+  orders:'<path d="M8 3h8l1 4H7z"/><path d="M5 7h14l-1 14H6z"/><path d="M10 12h4"/>',
+  schemes:'<path d="M20 12l-8 8-8-8V4h8z"/><circle cx="8.5" cy="8.5" r="1.2"/>',
+  targets:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/>',
+  money:'<rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.6"/><path d="M6 12h.01M18 12h.01"/>',
+  coll:'<path d="M12 3v18"/><path d="M17 7H9.5a2.5 2.5 0 000 5h5a2.5 2.5 0 010 5H6"/>',
+  claims:'<path d="M4 4h16v13H7l-3 3z"/><path d="M8 9h8M8 13h5"/>',
+  outlets:'<path d="M3 9l2-5h14l2 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>',
+  stock:'<path d="M3 8l9-5 9 5-9 5z"/><path d="M3 12l9 5 9-5"/><path d="M3 16l9 5 9-5"/>',
+  reports:'<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/>',
+  setup:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+  more:'<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>'
+};
+const MOD={
+  dash:'Dashboard',beat:'Beat working',att:'Attendance',pjp:'Journey plan',orders:'Orders',
+  schemes:'Schemes',targets:'Targets',money:'Outstanding',coll:'Collections',claims:'Claims',
+  outlets:'Outlets',stock:'Stock',reports:'Reports',setup:'Setup'
+};
+const GROUPS={
+  admin:[['Overview',['dash']],['Field',['beat','att','pjp']],['Sales',['orders','schemes','targets']],
+         ['Finance',['money','coll','claims']],['Network',['outlets','stock']],['Admin',['reports','setup']]],
+  asm:[['Overview',['dash']],['Field',['beat','att','pjp']],['Sales',['orders','schemes','targets']],
+       ['Finance',['money','coll','claims']],['Network',['outlets','stock']],['Admin',['reports']]],
+  salesman:[['Today',['beat','att']],['My work',['pjp','orders','targets']],['Collections',['money','coll']],['Network',['outlets']]],
+  distributor:[['Overview',['dash']],['Business',['stock','orders','claims']],['Finance',['money']],['Network',['outlets']]]
+};
+const BOTTOM={admin:['dash','orders','money','outlets'],asm:['dash','orders','money','outlets'],
+  salesman:['beat','orders','pjp','money'],distributor:['stock','orders','money','claims']};
+
+/* ==================== chrome ==================== */
+function chrome(){
+  const r=S.user.role, g=GROUPS[r];
+  document.querySelector('.rail').innerHTML=
+    `<div class="lg">Sharda <em>Field</em></div><div class="sub">SFA · DMS</div>`+
+    g.map(([h,ks])=>`<h5>${h}</h5>`+ks.map(k=>
+      `<a class="${S.tab===k?'on':''}" data-tab="${k}"><svg viewBox="0 0 24 24">${IC[k]}</svg>${MOD[k]}</a>`).join('')).join('')+
+    `<div class="foot"><a data-act="sync"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 01-9 9 9 9 0 01-7.5-4"/><path d="M3 12a9 9 0 019-9 9 9 0 017.5 4"/><path d="M3 17v-4h4M21 7v4h-4"/></svg>Server</a>
+     <a data-act="logout"><svg viewBox="0 0 24 24"><path d="M15 4h4v16h-4"/><path d="M10 8l-4 4 4 4M6 12h9"/></svg>Sign out</a></div>`;
+  document.querySelector('.topbar').innerHTML=
+    `<div class="tt"><b>${MOD[S.tab]||''}</b><span>${esc(DB.settings.brand)} · ${esc(S.user.title)}</span></div>
+     <button class="syncchip" id="syncChip" data-act="sync"></button>
+     <div class="who" data-act="switch"><b>${esc(S.user.name.split(' ')[0])}</b>
+       <div class="av ${r==='admin'?'':r==='asm'?'b':r==='salesman'?'c':'d'}">${esc(S.user.name.slice(0,1))}</div></div>`;
+  const b=BOTTOM[r];
+  document.querySelector('nav').innerHTML=b.map(k=>
+    `<button class="${S.tab===k?'on':''}" data-tab="${k}"><svg viewBox="0 0 24 24">${IC[k]}</svg><b>${MOD[k].split(' ')[0]}</b></button>`).join('')+
+    `<button data-act="more"><svg viewBox="0 0 24 24">${IC.more}</svg><b>More</b></button>`;
+}
+
+/* ==================== filter bar ==================== */
+function filterBar(opts){
+  const parts=[];
+  if(opts.includes('man')&&S.user.role!=='salesman'&&myMen().length>1)
+    parts.push(`<select data-f="me"><option value="">All salesmen</option>${myMen().map(m=>
+      `<option value="${m.id}" ${S.me===m.id?'selected':''}>${esc(m.name)}</option>`).join('')}</select>`);
+  if(opts.includes('dist')&&S.user.role!=='distributor'&&myDists().length>1)
+    parts.push(`<select data-f="dist"><option value="">All distributors</option>${myDists().map(d=>
+      `<option value="${d.id}" ${S.dist===d.id?'selected':''}>${esc(d.name)}</option>`).join('')}</select>`);
+  if(opts.includes('range'))
+    parts.push(`<select data-f="range">${[7,30,60,90].map(n=>
+      `<option value="${n}" ${S.range==n?'selected':''}>Last ${n} days</option>`).join('')}</select>`);
+  if(opts.includes('month'))
+    parts.push(`<select data-f="month">${months().map(m=>
+      `<option value="${m}" ${S.month===m?'selected':''}>${monLabel(m)}</option>`).join('')}</select>`);
+  return parts.length?`<div class="filters">${parts.join('')}</div>`:'';
+}
+function months(){const out=[];const d=new Date();for(let i=0;i<4;i++){out.push(monthOf(iso(d)));d.setMonth(d.getMonth()-1);}return out;}
+const monLabel=m=>MON[+m.slice(5,7)-1]+" '"+m.slice(2,4);
+
+/* ==================== dashboard ==================== */
+function vDash(){
+  const from=daysAgo(S.range), prevFrom=daysAgo(S.range*2);
+  const all=myOrders();
+  const cur=all.filter(o=>o.date>=from), prev=all.filter(o=>o.date>=prevFrom&&o.date<from);
+  const curV=cur.reduce((a,o)=>a+o.total,0), prevV=prev.reduce((a,o)=>a+o.total,0);
+  const g=prevV?(curV-prevV)/prevV*100:0;
+  const s=sc();
+  const vis=DB.visits.filter(v=>v.date>=from&&s.outlets.includes(v.outletId)&&(!S.me||v.salesmanId===S.me));
+  const billed=new Set(cur.map(o=>o.outletId)).size;
+  const os=outstanding(DB,i=>s.outlets.includes(i.outletId)&&(!S.dist||i.distId===S.dist));
+  const over=os.list.filter(i=>i.overdue).reduce((a,i)=>a+i.bal,0);
+  const disc=cur.reduce((a,o)=>a+(o.disc||0),0);
+
+  const boss=S.user.role!=='distributor';
+  const tg=myMen().map(m=>({m,...targetProgress(DB,monthOf(today()),m.id)}));
+  const tTot=tg.reduce((a,t)=>a+t.tgt,0), aTot=tg.reduce((a,t)=>a+t.ach,0);
+
+  const skuRank=DB.skus.map(k=>({k,
+    q:cur.reduce((a,o)=>a+o.lines.filter(l=>l.skuId===k.id).reduce((b,l)=>b+l.qty,0),0),
+    v:cur.reduce((a,o)=>a+o.lines.filter(l=>l.skuId===k.id).reduce((b,l)=>b+l.qty*l.rate-l.disc,0),0)}))
+    .sort((a,b)=>b.v-a.v);
+  const maxV=skuRank[0]?.v||1;
+
+  const risk=myDists().map(d=>({d,st:stockOf(DB,d.id)})).map(x=>({d:x.d,n:x.st.filter(r=>r.cover<7).length,
+    val:x.st.reduce((a,r)=>a+r.close*r.sku.ptd,0)}));
+
+  return `<div class="mh"><div><span class="eyebrow">${esc(DB.settings.brand)} · rolling ${S.range} days</span><h2>Dashboard</h2></div>
+    <div class="right"><button class="btn ghost sm" data-act="exportOrders">Export</button></div></div>
+  ${filterBar(['man','dist','range'])}
+  <div class="kpis k5">
+    <div class="kpi acc link" data-tab="orders"><div class="k">Secondary sales</div><div class="v">${inrS(curV)}</div>
+      <div class="s"><span class="${g>=0?'up':'down'}">${g>=0?'▲':'▼'} ${Math.abs(g).toFixed(1)}%</span> vs prior ${S.range}d</div></div>
+    <div class="kpi link" data-tab="outlets"><div class="k">Outlets billed</div><div class="v">${billed}<small>/${myOutlets().length}</small></div>
+      <div class="bar"><i style="width:${pct(billed,myOutlets().length)}%"></i></div></div>
+    <div class="kpi ${boss?'link':''}" ${boss?'data-tab="att"':''}><div class="k">Productive calls</div><div class="v">${pct(vis.filter(v=>v.status==='order').length,vis.length)}<small>%</small></div>
+      <div class="s">${vis.length} calls logged</div></div>
+    <div class="kpi ${over>0?'bad':''} link" data-tab="money"><div class="k">Overdue</div><div class="v">${inrS(over)}</div>
+      <div class="s">of ${inrS(os.total)} outstanding</div></div>
+    ${boss?`<div class="kpi ${aTot>=tTot*0.9?'':'warn'} link" data-tab="targets"><div class="k">Month target</div><div class="v">${pct(aTot,tTot)}<small>%</small></div>
+      <div class="s">${inrS(aTot)} of ${inrS(tTot)}</div></div>`:
+      `<div class="kpi"><div class="k">Scheme earned</div><div class="v">${inrS(disc)}</div><div class="s">claimable this window</div></div>`}
+  </div>
+
+  <div class="card"><h3>SKU offtake <span class="tag">net of scheme, ${S.range}d</span></h3>
+    ${skuRank.map(r=>`<div style="margin-bottom:8px">
+      <div style="display:flex;font-size:12.5px;gap:8px"><span style="flex:1"><b>${esc(r.k.name)}</b> <span class="muted">${esc(r.k.pack)}</span></span>
+      <span class="num" style="font-weight:600">${inrS(r.v)}</span><span class="num muted" style="width:58px;text-align:right">${r.q} pk</span></div>
+      <div class="bar"><i style="width:${r.v/maxV*100}%"></i></div></div>`).join('')}
+  </div>
+
+  ${boss?`<div class="card flush"><div class="ch"><b>Salesman scorecard</b><span class="tag">${monLabel(monthOf(today()))}</span></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>Salesman</th><th class="n">Calls</th><th class="n">Prod %</th>
+    <th class="n">Achieved</th><th class="n">Target</th><th class="n">%</th><th class="n">Projection</th></tr></thead><tbody>
+  ${tg.map(t=>{const v=DB.visits.filter(x=>x.salesmanId===t.m.id&&x.date>=from);
+    return `<tr><td><b>${esc(t.m.name)}</b><div class="sub">${esc(t.m.area)}</div></td>
+    <td class="n">${v.length}</td><td class="n">${pct(v.filter(x=>x.status==='order').length,v.length)}%</td>
+    <td class="n" style="font-weight:600">${inrS(t.ach)}</td><td class="n">${inrS(t.tgt)}</td>
+    <td class="n"><span class="tag ${t.pc>=90?'g':t.pc>=70?'y':'r'}">${t.pc}%</span></td>
+    <td class="n">${inrS(t.proj)}</td></tr>`;}).join('')}
+  </tbody></table></div></div>`:''}
+
+  <div class="card flush"><div class="ch"><b>Distributor health</b></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>Distributor</th><th class="n">Secondary</th><th class="n">Stock value</th>
+    <th class="n">Stock-out risk</th><th class="n">Outstanding</th></tr></thead><tbody>
+  ${risk.map(r=>{const o=outstanding(DB,i=>i.distId===r.d.id);
+    return `<tr class="clickable" data-godist="${r.d.id}"><td><b>${esc(r.d.name)}</b><div class="sub">${esc(r.d.area)}</div></td>
+    <td class="n">${inrS(cur.filter(x=>x.distId===r.d.id).reduce((a,x)=>a+x.total,0))}</td>
+    <td class="n">${inrS(r.val)}</td>
+    <td class="n">${r.n?`<span class="tag r">${r.n} SKU</span>`:'<span class="tag g">clear</span>'}</td>
+    <td class="n">${inrS(o.total)}</td></tr>`;}).join('')}
+  </tbody></table></div></div>
+
+  <div class="card"><h3>Scheme cost <span class="tag y">${S.range}d</span></h3>
+    <div style="display:flex;align-items:baseline;gap:10px"><div class="num" style="font-size:22px;font-weight:600">${inrS(disc)}</div>
+    <div class="muted">${(disc/(curV+disc)*100||0).toFixed(2)}% of gross — discount plus free goods claimed back by distributors</div></div>
+  </div>`;
+}
+
+/* ==================== beat working ==================== */
+function vBeat(){
+  const man=focusMan();
+  if(!man)return `<div class="empty"><b>No salesman in scope</b>Add one under Setup.</div>`;
+  const m=byId(DB.salesmen,man);
+  const att=attToday(DB,man);
+  const plan=pjpFor(DB,man,today()).map(id=>byId(DB.outlets,id)).filter(o=>o.id);
+  const dayPlan=DB.outlets.filter(o=>o.salesmanId===man&&o.beat===S.day);
+  const isToday=S.day===dayName(today());
+  const list=isToday?plan:dayPlan;
+  const v=DB.visits.filter(x=>x.date===today()&&x.salesmanId===man);
+  const done=list.filter(o=>v.some(x=>x.outletId===o.id)).length;
+  const prod=list.filter(o=>v.some(x=>x.outletId===o.id&&x.status==='order')).length;
+  const val=DB.orders.filter(o=>o.date===today()&&o.salesmanId===man).reduce((a,o)=>a+o.total,0);
+  const t=targetProgress(DB,monthOf(today()),man);
+
+  return `<div class="mh"><div><span class="eyebrow">${esc(m.area)} · ${today()}</span><h2>${esc(m.name)}</h2></div>
+    <div class="right">${S.user.role!=='salesman'&&myMen().length>1?
+      `<select data-f="me">${myMen().map(x=>`<option value="${x.id}" ${x.id===man?'selected':''}>${esc(x.name)}</option>`).join('')}</select>`:''}</div></div>
+
+  <div class="punch">
+    <div class="m"><div class="l">${att?(att.outTs?'Day closed':'Day started'):'Not started'}</div>
+      <div class="v">${att?fmtTime(att.inTs)+(att.outTs?' — '+fmtTime(att.outTs):''):'Punch in to begin'}</div>
+      <div class="sub">${att?(att.inLat?`GPS ${att.inLat}, ${att.inLng}`:'Logged without location')+(att.km?` · ${att.km} km`:''):'Punch-in records the time, and location if the browser allows it'}</div></div>
+    ${!att?`<button class="btn g" data-act="punchIn">Punch in</button>`
+      :!att.outTs?`<button class="btn ghost" data-act="punchOut">Punch out</button>`
+      :`<span class="tag g">Done</span>`}
+  </div>
+
+  <div class="days">${DAYS.map(d=>{const n=DB.outlets.filter(o=>o.salesmanId===man&&o.beat===d).length;
+    return `<div class="day ${S.day===d?'on':''}" data-day="${d}"><b>${d}</b><span>${n} outlets</span></div>`;}).join('')}</div>
+
+  <div class="kpis">
+    <div class="kpi acc"><div class="k">Calls done</div><div class="v">${done}<small>/${list.length}</small></div>
+      <div class="bar"><i style="width:${pct(done,list.length)}%"></i></div></div>
+    <div class="kpi"><div class="k">Productive</div><div class="v">${pct(prod,done)}<small>%</small></div><div class="s">${prod} orders</div></div>
+    <div class="kpi"><div class="k">Value today</div><div class="v">${inrS(val)}</div><div class="s">net of scheme</div></div>
+    <div class="kpi ${t.pc<60?'warn':''}"><div class="k">Month target</div><div class="v">${t.pc}<small>%</small></div>
+      <div class="s">${inrS(t.need)} left · ${t.left}d</div></div>
+  </div>
+
+  ${!isToday?`<div class="note">Showing the ${S.day} beat. Orders can only be booked on today's route.</div>`:''}
+  ${geoBlocked?`<div class="note">Visits are being logged without location. ${esc(geoBlocked)}</div>`:''}
+
+  <div class="card flush">${list.length?list.map(o=>{
+    const vis=v.find(x=>x.outletId===o.id);
+    const st=vis?(vis.status==='order'?'ok':'no'):'due';
+    const ord=DB.orders.find(x=>x.date===today()&&x.outletId===o.id);
+    const due=outletDue(DB,o.id);
+    const overLimit=due>o.creditLimit;
+    return `<div class="row ${isToday?'click':''}" ${isToday?`data-order-for="${o.id}"`:''}>
+      <div class="stripe ${st}"></div>
+      <div class="m"><div class="t">${esc(o.name)}</div>
+        <div class="s">${esc(o.area)} · ${esc(byId(DB.distributors,o.distId).name)}${overLimit?' · <span style="color:var(--red);font-weight:600">over credit limit</span>':due>0?` · due ${inr(due)}`:''}</div></div>
+      <div class="r">${ord?`<div class="num" style="font-weight:600">${inr(ord.total)}</div><span class="tag g">Booked</span>`
+        :vis?`<span class="tag r">No order</span>`:`<span class="tag y">Pending</span>`}</div></div>`;}).join('')
+    :`<div class="empty"><b>No outlets on ${S.day}</b>Assign a beat day from the Outlets module.</div>`}</div>`;
+}
+
+/* ==================== attendance ==================== */
+function vAtt(){
+  const from=daysAgo(S.range);
+  const men=S.me?myMen().filter(m=>m.id===S.me):myMen();
+  const rows=men.map(m=>{
+    const a=DB.attendance.filter(x=>x.salesmanId===m.id&&x.date>=from);
+    const wd=workDays(from);
+    const km=a.reduce((x,y)=>x+(y.km||0),0);
+    const late=a.filter(x=>x.inTs.slice(11,16)>'09:30').length;
+    const v=DB.visits.filter(x=>x.salesmanId===m.id&&x.date>=from);
+    return {m,present:a.length,wd,km,late,calls:v.length,perDay:a.length?(v.length/a.length).toFixed(1):'0.0'};
+  });
+  const log=DB.attendance.filter(a=>sc().men.includes(a.salesmanId)&&(!S.me||a.salesmanId===S.me)&&a.date>=from)
+    .sort((a,b)=>a.date<b.date?1:-1).slice(0,40);
+  return `<div class="mh"><div><span class="eyebrow">Last ${S.range} days</span><h2>Attendance</h2></div></div>
+  ${filterBar(['man','range'])}
+  <div class="card flush"><div class="scroll"><table class="tbl">
+    <thead><tr><th>Salesman</th><th class="n">Present</th><th class="n">Working days</th><th class="n">Late in</th>
+      <th class="n">Calls/day</th><th class="n">Km</th><th>Attendance</th></tr></thead><tbody>
+    ${rows.map(r=>`<tr><td><b>${esc(r.m.name)}</b><div class="sub">${esc(r.m.area)}</div></td>
+      <td class="n">${r.present}</td><td class="n">${r.wd}</td>
+      <td class="n">${r.late?`<span class="tag y">${r.late}</span>`:'0'}</td>
+      <td class="n">${r.perDay}</td><td class="n">${r.km}</td>
+      <td style="min-width:110px"><div class="num" style="font-size:11px">${pct(r.present,r.wd)}%</div>
+        <div class="bar"><i class="${pct(r.present,r.wd)<80?'low':pct(r.present,r.wd)<92?'mid':''}" style="width:${pct(r.present,r.wd)}%"></i></div></td></tr>`).join('')}
+  </tbody></table></div></div>
+  <div class="card flush"><div class="ch"><b>Punch log</b><span class="tag">latest ${log.length}</span></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>Date</th><th>Salesman</th><th>In</th><th>Out</th>
+    <th class="n">Hours</th><th class="n">Km</th><th>Location</th></tr></thead><tbody>
+  ${log.map(a=>{const h=a.outTs?((new Date(a.outTs)-new Date(a.inTs))/36e5).toFixed(1):'—';
+    return `<tr><td class="num">${a.date.slice(5)}</td><td>${esc(byId(DB.salesmen,a.salesmanId).name)}</td>
+    <td class="num">${fmtTime(a.inTs)}${a.inTs.slice(11,16)>'09:30'?' <span class="tag y">late</span>':''}</td>
+    <td class="num">${fmtTime(a.outTs)}</td><td class="n">${h}</td><td class="n">${a.km||'—'}</td>
+    <td class="sub num">${a.inLat?a.inLat+', '+a.inLng:'—'}</td></tr>`;}).join('')||'<tr><td colspan="7" class="muted" style="padding:18px">No attendance in this window.</td></tr>'}
+  </tbody></table></div></div>`;
+}
+function workDays(from){let n=0;const d=new Date(from+'T00:00'),e=new Date(today()+'T00:00');
+  while(d<=e){if(d.getDay()!==0)n++;d.setDate(d.getDate()+1);}return n;}
+
+/* ==================== journey plan ==================== */
+function vPjp(){
+  const man=focusMan();
+  const m=byId(DB.salesmen,man);
+  const cells=pjpMonth(DB,man,S.month);
+  const first=new Date(S.month+'-01T00:00').getDay();
+  const pad=Array(first).fill(null);
+  const tot=cells.filter(c=>!c.sun&&!c.future);
+  const planned=tot.reduce((a,c)=>a+c.plan,0), done=tot.reduce((a,c)=>a+c.done,0), dev=tot.reduce((a,c)=>a+c.dev,0);
+  return `<div class="mh"><div><span class="eyebrow">${esc(m.name)} · ${monLabel(S.month)}</span><h2>Journey plan</h2></div>
+    <div class="right"><button class="btn ghost sm" data-act="exportPjp">Export</button></div></div>
+  ${filterBar(['man','month'])}
+  <div class="kpis">
+    <div class="kpi acc"><div class="k">Plan adherence</div><div class="v">${pct(done,planned)}<small>%</small></div>
+      <div class="s">${done} of ${planned} planned calls</div></div>
+    <div class="kpi ${dev?'warn':''}"><div class="k">Deviations</div><div class="v">${dev}</div><div class="s">visits outside the plan</div></div>
+    <div class="kpi"><div class="k">Missed calls</div><div class="v">${Math.max(0,planned-done)}</div><div class="s">planned, not visited</div></div>
+    <div class="kpi"><div class="k">Beat size</div><div class="v">${DB.outlets.filter(o=>o.salesmanId===man).length}</div><div class="s">outlets mapped</div></div>
+  </div>
+  <div class="card"><div class="cal">
+    ${['S','M','T','W','T','F','S'].map(d=>`<div class="hd">${d}</div>`).join('')}
+    ${pad.map(()=>`<div></div>`).join('')}
+    ${cells.map(c=>{
+      if(c.sun)return `<div class="cell sun"><div class="dd">${c.date.slice(8)}</div></div>`;
+      const hp=c.plan?Math.min(100,c.done/c.plan*100):0;
+      return `<div class="cell ${c.future?'fut':''} ${c.date===today()?'today':''}">
+        <div class="dd">${c.d}</div>
+        <div class="mini">${c.plan?c.done+'/'+c.plan:'—'}</div>
+        <div class="pb"><i><b style="height:${hp}%"></b></i>${c.dev?`<i class="dev"><b style="height:100%"></b></i>`:''}</div></div>`;}).join('')}
+  </div>
+  <div class="muted" style="margin-top:10px">Green bar is planned calls completed. Gold bar marks a day with visits outside the journey plan.</div></div>
+
+  <div class="card flush"><div class="ch"><b>Beat map</b><span class="tag">${DAYS.length} working days</span></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>Day</th><th class="n">Outlets</th><th>Markets</th><th class="n">Avg value</th></tr></thead><tbody>
+  ${DAYS.map(d=>{const os=DB.outlets.filter(o=>o.salesmanId===man&&o.beat===d);
+    const ords=DB.orders.filter(o=>o.salesmanId===man&&dayName(o.date)===d&&o.date>=daysAgo(60));
+    const dates=new Set(ords.map(o=>o.date)).size;
+    return `<tr><td><b>${d}</b></td><td class="n">${os.length}</td>
+      <td class="sub">${[...new Set(os.map(o=>o.area))].join(', ')||'—'}</td>
+      <td class="n">${dates?inrS(ords.reduce((a,o)=>a+o.total,0)/dates):'—'}</td></tr>`;}).join('')}
+  </tbody></table></div></div>`;
+}
+/* ==================== orders ==================== */
+function vOrders(){
+  const from=daysAgo(S.range);
+  let list=myOrders().filter(o=>o.date>=from).sort((a,b)=>a.date<b.date?1:-1);
+  if(S.q){const q=S.q.toLowerCase();list=list.filter(o=>byId(DB.outlets,o.outletId).name.toLowerCase().includes(q));}
+  const gross=list.reduce((a,o)=>a+o.gross,0), disc=list.reduce((a,o)=>a+(o.disc||0),0);
+  const show=list.slice(0,150);
+  return `<div class="mh"><div><span class="eyebrow">${list.length} orders · ${inrS(gross-disc)} net</span><h2>Orders</h2></div>
+    <div class="right"><button class="btn ghost sm" data-act="exportOrders">Export CSV</button></div></div>
+  ${filterBar(['man','dist','range'])}
+  <input class="f" style="width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;margin-bottom:12px" id="q" placeholder="Search outlet" value="${esc(S.q)}">
+  <div class="kpis">
+    <div class="kpi"><div class="k">Gross</div><div class="v">${inrS(gross)}</div><div class="s">before scheme</div></div>
+    <div class="kpi warn"><div class="k">Scheme cost</div><div class="v">${inrS(disc)}</div><div class="s">${(disc/gross*100||0).toFixed(2)}% of gross</div></div>
+    <div class="kpi acc"><div class="k">Net value</div><div class="v">${inrS(gross-disc)}</div><div class="s">billed to retailer</div></div>
+    <div class="kpi"><div class="k">Avg order</div><div class="v">${inrS(list.length?(gross-disc)/list.length:0)}</div><div class="s">${list.length?(list.reduce((a,o)=>a+o.lines.length,0)/list.length).toFixed(1):0} lines avg</div></div>
+  </div>
+  <div class="card flush"><div class="scroll"><table class="tbl">
+    <thead><tr><th>Date</th><th>Outlet</th><th>Salesman</th><th class="n">Lines</th><th class="n">Gross</th><th class="n">Scheme</th><th class="n">Net</th></tr></thead>
+    <tbody>${show.map(o=>`<tr class="clickable" data-slip="${o.id}">
+      <td class="num">${o.date.slice(5)}</td>
+      <td><b>${esc(byId(DB.outlets,o.outletId).name)}</b><div class="sub">${esc(byId(DB.distributors,o.distId).name)}</div></td>
+      <td class="sub">${esc(byId(DB.salesmen,o.salesmanId).name)}</td>
+      <td class="n">${o.lines.length}</td><td class="n">${inr(o.gross)}</td>
+      <td class="n">${o.disc?`<span style="color:var(--gold)">−${inr(o.disc)}</span>`:'—'}</td>
+      <td class="n" style="font-weight:600">${inr(o.total)}</td></tr>`).join('')||
+      '<tr><td colspan="7" class="muted" style="padding:20px">No orders in this window.</td></tr>'}
+    </tbody></table></div>
+    ${list.length>150?`<div class="muted" style="padding:10px 12px">Showing latest 150 of ${list.length}. Export for the full set.</div>`:''}</div>`;
+}
+
+/* ==================== schemes ==================== */
+function vSchemes(){
+  const mo=S.month;
+  const cl=claims(DB,mo).filter(c=>sc().dists.includes(c.dist.id));
+  const usage=DB.schemes.map(s=>{
+    const os=DB.orders.filter(o=>monthOf(o.date)===mo&&(o.schemes||[]).includes(s.name)&&sc().outlets.includes(o.outletId));
+    const cost=os.reduce((a,o)=>a+(s.type==='freegoods'
+      ? o.lines.filter(l=>l.scheme===s.name).reduce((b,l)=>b+(l.free||0)*byId(DB.skus,l.skuId).ptd,0)
+      : s.type==='value' ? Math.round(o.gross*s.pct/100)
+      : o.lines.filter(l=>l.scheme===s.name).reduce((b,l)=>b+l.disc,0)),0);
+    return {s,orders:os.length,cost,value:os.reduce((a,o)=>a+o.gross,0)};
+  });
+  const admin=S.user.role==='admin'||S.user.role==='asm';
+  return `<div class="mh"><div><span class="eyebrow">${monLabel(mo)}</span><h2>Schemes</h2></div>
+    <div class="right">${admin?`<button class="btn g sm" data-act="newScheme">+ New scheme</button>`:''}</div></div>
+  ${filterBar(['month'])}
+  <div class="card flush"><div class="ch"><b>Scheme master</b></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>Scheme</th><th>Type</th><th>Applies to</th><th class="n">Trigger</th>
+    <th class="n">Benefit</th><th class="n">Orders</th><th class="n">Cost</th><th>Status</th></tr></thead><tbody>
+  ${DB.schemes.map(s=>{const u=usage.find(x=>x.s.id===s.id);
+    return `<tr><td><b>${esc(s.name)}</b><div class="sub">${s.from.slice(5)} → ${s.to.slice(5)}</div></td>
+      <td><span class="tag ${s.type==='freegoods'?'g':s.type==='value'?'b':'y'}">${s.type==='freegoods'?'Free goods':s.type==='value'?'Bill value':s.type==='qty'?'Qty slab':'Flat'}</span></td>
+      <td class="sub">${s.skuIds.length?s.skuIds.map(i=>byId(DB.skus,i).pack).join(', '):'All SKUs'}</td>
+      <td class="n">${s.type==='value'?inr(s.min):s.min+' pk'}</td>
+      <td class="n">${s.type==='freegoods'?'+'+s.free+' free':s.pct+'%'}</td>
+      <td class="n">${u.orders}</td><td class="n">${inrS(u.cost)}</td>
+      <td>${s.active?'<span class="tag g">Live</span>':'<span class="tag">Expired</span>'}
+        ${admin?`<button class="btn ghost sm" data-togglescheme="${s.id}" style="margin-left:4px">${s.active?'Stop':'Start'}</button>`:''}</td></tr>`;}).join('')}
+  </tbody></table></div></div>
+
+  <div class="card flush"><div class="ch"><b>Distributor claim</b><span class="tag">payable on settlement</span></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>Distributor</th><th class="n">Orders</th><th class="n">Gross</th>
+    <th class="n">Discount</th><th class="n">Free goods</th><th class="n">Claim</th><th class="n">% of gross</th></tr></thead><tbody>
+  ${cl.map(c=>`<tr><td><b>${esc(c.dist.name)}</b></td><td class="n">${c.orders}</td><td class="n">${inrS(c.gross)}</td>
+    <td class="n">${inr(c.disc)}</td><td class="n">${inr(c.freeVal)}</td>
+    <td class="n" style="font-weight:600">${inr(c.total)}</td>
+    <td class="n">${(c.total/c.gross*100||0).toFixed(2)}%</td></tr>`).join('')}
+  <tr style="background:#f8f7f3"><td><b>Total</b></td><td class="n">${cl.reduce((a,c)=>a+c.orders,0)}</td>
+    <td class="n">${inrS(cl.reduce((a,c)=>a+c.gross,0))}</td><td class="n">${inr(cl.reduce((a,c)=>a+c.disc,0))}</td>
+    <td class="n">${inr(cl.reduce((a,c)=>a+c.freeVal,0))}</td>
+    <td class="n" style="font-weight:700">${inr(cl.reduce((a,c)=>a+c.total,0))}</td><td></td></tr>
+  </tbody></table></div></div>`;
+}
+
+/* ==================== targets ==================== */
+function vTargets(){
+  const mo=S.month;
+  const men=myMen().map(m=>({m,...targetProgress(DB,mo,m.id)}));
+  const admin=S.user.role==='admin'||S.user.role==='asm';
+  const skuT=DB.skus.map(s=>{
+    const t=DB.targets.find(x=>x.month===mo&&x.skuId===s.id)||{qty:0};
+    const q=DB.orders.filter(o=>monthOf(o.date)===mo&&sc().outlets.includes(o.outletId))
+      .reduce((a,o)=>a+o.lines.filter(l=>l.skuId===s.id).reduce((b,l)=>b+l.qty,0),0);
+    return {s,tgt:t.qty,ach:q,pc:pct(q,t.qty)};
+  });
+  const tT=men.reduce((a,x)=>a+x.tgt,0), tA=men.reduce((a,x)=>a+x.ach,0);
+  const d=men[0]||{gone:1,dim:30,left:0};
+  return `<div class="mh"><div><span class="eyebrow">${monLabel(mo)} · day ${d.gone} of ${d.dim}</span><h2>Targets</h2></div>
+    <div class="right">${admin?`<button class="btn ghost sm" data-act="setTargets">Set targets</button>`:''}</div></div>
+  ${filterBar(['month'])}
+  <div class="kpis">
+    <div class="kpi acc"><div class="k">Achievement</div><div class="v">${pct(tA,tT)}<small>%</small></div>
+      <div class="bar"><i class="${pct(tA,tT)<60?'low':pct(tA,tT)<85?'mid':''}" style="width:${Math.min(100,pct(tA,tT))}%"></i></div></div>
+    <div class="kpi"><div class="k">Achieved</div><div class="v">${inrS(tA)}</div><div class="s">of ${inrS(tT)}</div></div>
+    <div class="kpi"><div class="k">Gap</div><div class="v">${inrS(Math.max(0,tT-tA))}</div><div class="s">${d.left} working days left</div></div>
+    <div class="kpi"><div class="k">Needed / day</div><div class="v">${inrS(d.left>0?(tT-tA)/d.left:0)}</div><div class="s">to close the gap</div></div>
+  </div>
+  <div class="card flush"><div class="ch"><b>By salesman</b></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>Salesman</th><th class="n">Target</th><th class="n">Achieved</th>
+    <th>Progress</th><th class="n">Run rate</th><th class="n">Projection</th><th class="n">Needed/day</th></tr></thead><tbody>
+  ${men.map(t=>`<tr><td><b>${esc(t.m.name)}</b><div class="sub">${esc(t.m.area)}</div></td>
+    <td class="n">${inrS(t.tgt)}</td><td class="n" style="font-weight:600">${inrS(t.ach)}</td>
+    <td style="min-width:120px"><div class="num" style="font-size:11px">${t.pc}%</div>
+      <div class="bar"><i class="${t.pc<60?'low':t.pc<85?'mid':''}" style="width:${Math.min(100,t.pc)}%"></i></div></td>
+    <td class="n">${inrS(t.ach/t.gone)}</td>
+    <td class="n">${inrS(t.proj)} <span class="tag ${t.proj>=t.tgt?'g':'r'}">${t.proj>=t.tgt?'on':'short'}</span></td>
+    <td class="n">${inrS(t.perDay)}</td></tr>`).join('')}
+  </tbody></table></div></div>
+  <div class="card flush"><div class="ch"><b>By SKU</b><span class="tag">packs</span></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>Product</th><th class="n">Target</th><th class="n">Achieved</th><th>Progress</th></tr></thead><tbody>
+  ${skuT.map(r=>`<tr><td><b>${esc(r.s.name)}</b><div class="sub">${esc(r.s.pack)}</div></td>
+    <td class="n">${r.tgt}</td><td class="n" style="font-weight:600">${r.ach}</td>
+    <td style="min-width:130px"><div class="num" style="font-size:11px">${r.pc}%</div>
+      <div class="bar"><i class="${r.pc<60?'low':r.pc<85?'mid':''}" style="width:${Math.min(100,r.pc)}%"></i></div></td></tr>`).join('')}
+  </tbody></table></div></div>`;
+}
+
+/* ==================== outstanding ==================== */
+function vMoney(){
+  const s=sc();
+  const os=outstanding(DB,i=>s.outlets.includes(i.outletId)&&(!S.dist||i.distId===S.dist)&&
+    (!S.me||byId(DB.outlets,i.outletId).salesmanId===S.me));
+  const B=os.buckets;
+  const overdue=os.list.filter(i=>i.overdue);
+  const byOutlet={};
+  os.list.forEach(i=>{byOutlet[i.outletId]=(byOutlet[i.outletId]||0)+i.bal;});
+  const top=Object.entries(byOutlet).map(([id,v])=>({o:byId(DB.outlets,id),v}))
+    .sort((a,b)=>b.v-a.v).slice(0,12);
+  return `<div class="mh"><div><span class="eyebrow">${os.list.length} open bills</span><h2>Outstanding</h2></div>
+    <div class="right"><button class="btn g sm" data-act="newColl">+ Record collection</button>
+      <button class="btn ghost sm" data-act="exportAgeing">Export</button></div></div>
+  ${filterBar(['man','dist'])}
+  <div class="kpis">
+    <div class="kpi acc"><div class="k">Total outstanding</div><div class="v">${inrS(os.total)}</div><div class="s">across ${Object.keys(byOutlet).length} outlets</div></div>
+    <div class="kpi ${overdue.length?'bad':''}"><div class="k">Overdue</div><div class="v">${inrS(overdue.reduce((a,i)=>a+i.bal,0))}</div>
+      <div class="s">${overdue.length} bills past due date</div></div>
+    <div class="kpi ${B.b30+B.b60>0?'warn':''}"><div class="k">Over 30 days</div><div class="v">${inrS(B.b30+B.b60)}</div>
+      <div class="s">${pct(B.b30+B.b60,os.total)}% of book</div></div>
+    <div class="kpi"><div class="k">Collected 30d</div><div class="v">${inrS(DB.collections.filter(c=>c.date>=daysAgo(30)&&s.outlets.includes(c.outletId)).reduce((a,c)=>a+c.amount,0))}</div>
+      <div class="s">receipts logged</div></div>
+  </div>
+  <div class="card"><h3>Ageing</h3>
+    ${[['0–15 days',B.b0,'var(--green)'],['16–30 days',B.b15,'var(--gold)'],['31–60 days',B.b30,'var(--clay)'],['60+ days',B.b60,'var(--red)']]
+      .map(([l,v,c])=>`<div style="margin-bottom:9px">
+        <div style="display:flex;font-size:12.5px"><span style="flex:1">${l}</span>
+        <span class="num" style="font-weight:600">${inr(v)}</span><span class="num muted" style="width:48px;text-align:right">${pct(v,os.total)}%</span></div>
+        <div class="bar"><i style="width:${pct(v,os.total)}%;background:${c}"></i></div></div>`).join('')}
+  </div>
+  <div class="card flush"><div class="ch"><b>Top outstanding outlets</b></div>
+  ${top.map(t=>{const over=t.v>t.o.creditLimit;
+    return `<div class="row click" data-collect="${t.o.id}"><div class="m"><div class="t">${esc(t.o.name)}</div>
+      <div class="s">${esc(t.o.area)} · limit ${inrS(t.o.creditLimit)}${over?' · <span style="color:var(--red);font-weight:600">exceeded</span>':''}</div></div>
+      <div class="r"><div class="num" style="font-weight:600">${inr(t.v)}</div><div class="muted">tap to collect</div></div></div>`;}).join('')
+    ||'<div class="empty"><b>Nothing outstanding</b>Every bill in scope is settled.</div>'}</div>
+  <div class="card flush"><div class="ch"><b>Bill-wise ageing</b><span class="tag">oldest first</span></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>Bill</th><th>Outlet</th><th class="n">Date</th><th class="n">Due</th>
+    <th class="n">Age</th><th class="n">Amount</th><th class="n">Paid</th><th class="n">Balance</th></tr></thead><tbody>
+  ${os.list.slice(0,60).map(i=>`<tr><td class="num sub">${i.id.slice(-5).toUpperCase()}</td>
+    <td><b>${esc(byId(DB.outlets,i.outletId).name)}</b></td><td class="n">${i.date.slice(5)}</td>
+    <td class="n">${i.overdue?`<span style="color:var(--red)">${i.due.slice(5)}</span>`:i.due.slice(5)}</td>
+    <td class="n">${i.age}d</td><td class="n">${inr(i.amount)}</td><td class="n">${i.paid?inr(i.paid):'—'}</td>
+    <td class="n" style="font-weight:600">${inr(i.bal)}</td></tr>`).join('')}
+  </tbody></table></div></div>`;
+}
+
+/* ==================== collections ==================== */
+function vColl(){
+  const s=sc();
+  const list=DB.collections.filter(c=>s.outlets.includes(c.outletId)&&(!S.me||c.salesmanId===S.me)&&c.date>=daysAgo(S.range))
+    .sort((a,b)=>a.date<b.date?1:-1);
+  const tot=list.reduce((a,c)=>a+c.amount,0);
+  const byMode={};list.forEach(c=>byMode[c.mode]=(byMode[c.mode]||0)+c.amount);
+  return `<div class="mh"><div><span class="eyebrow">${list.length} receipts · ${S.range} days</span><h2>Collections</h2></div>
+    <div class="right"><button class="btn g sm" data-act="newColl">+ Record collection</button></div></div>
+  ${filterBar(['man','range'])}
+  <div class="kpis">
+    <div class="kpi acc"><div class="k">Collected</div><div class="v">${inrS(tot)}</div><div class="s">last ${S.range} days</div></div>
+    ${['cash','upi','cheque'].map(m=>`<div class="kpi"><div class="k">${m}</div><div class="v">${inrS(byMode[m]||0)}</div>
+      <div class="s">${pct(byMode[m]||0,tot)}% of receipts</div></div>`).join('')}
+  </div>
+  <div class="card flush"><div class="scroll"><table class="tbl">
+    <thead><tr><th class="n">Date</th><th>Outlet</th><th>Against bill</th><th>Mode</th><th>Collected by</th><th class="n">Amount</th></tr></thead>
+    <tbody>${list.slice(0,80).map(c=>`<tr><td class="n">${c.date.slice(5)}</td>
+      <td><b>${esc(byId(DB.outlets,c.outletId).name)}</b></td>
+      <td class="num sub">${c.invoiceId?c.invoiceId.slice(-5).toUpperCase():'on account'}</td>
+      <td><span class="tag ${c.mode==='cash'?'y':c.mode==='upi'?'g':'b'}">${c.mode}</span></td>
+      <td class="sub">${esc(byId(DB.salesmen,c.salesmanId).name||'—')}</td>
+      <td class="n" style="font-weight:600">${inr(c.amount)}</td></tr>`).join('')||
+      '<tr><td colspan="6" class="muted" style="padding:20px">No receipts in this window.</td></tr>'}
+    </tbody></table></div></div>`;
+}
+
+/* ==================== claims ==================== */
+function vClaims(){
+  const mo=S.month;
+  const cl=claims(DB,mo).filter(c=>sc().dists.includes(c.dist.id));
+  return `<div class="mh"><div><span class="eyebrow">${monLabel(mo)}</span><h2>Claims</h2></div></div>
+  ${filterBar(['month'])}
+  ${cl.map(c=>{
+    const os=DB.orders.filter(o=>o.distId===c.dist.id&&monthOf(o.date)===mo&&(o.disc>0||o.lines.some(l=>l.free)));
+    return `<div class="card flush"><div class="ch"><b>${esc(c.dist.name)}</b>
+      <div class="right"><span class="tag ${c.total?'y':'g'}">${inr(c.total)} claimable</span></div></div>
+      <div class="scroll"><table class="tbl"><thead><tr><th class="n">Date</th><th>Outlet</th><th>Scheme</th>
+        <th class="n">Discount</th><th class="n">Free goods</th></tr></thead><tbody>
+      ${os.slice(0,25).map(o=>{const fv=o.lines.reduce((a,l)=>a+(l.free||0)*byId(DB.skus,l.skuId).ptd,0);
+        return `<tr><td class="n">${o.date.slice(5)}</td><td>${esc(byId(DB.outlets,o.outletId).name)}</td>
+        <td class="sub">${(o.schemes||[]).join(' · ')||'—'}</td>
+        <td class="n">${o.disc?inr(o.disc):'—'}</td><td class="n">${fv?inr(fv):'—'}</td></tr>`;}).join('')||
+        '<tr><td colspan="5" class="muted" style="padding:16px">No scheme claims this month.</td></tr>'}
+      </tbody></table></div></div>`;}).join('')}`;
+}
+
+/* ==================== outlets ==================== */
+function vOutlets(){
+  const q=S.q.toLowerCase();
+  let list=myOutlets();
+  if(S.me)list=list.filter(o=>o.salesmanId===S.me);
+  if(S.dist)list=list.filter(o=>o.distId===S.dist);
+  if(q)list=list.filter(o=>(o.name+o.area).toLowerCase().includes(q));
+  const admin=S.user.role!=='distributor';
+  return `<div class="mh"><div><span class="eyebrow">${list.length} of ${myOutlets().length} outlets</span><h2>Outlets</h2></div>
+    <div class="right">${admin?`<button class="btn g sm" data-act="newOutlet">+ Add outlet</button>`:''}
+      <button class="btn ghost sm" data-act="exportOutlets">Export</button></div></div>
+  ${filterBar(['man','dist'])}
+  <input class="f" style="width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;margin-bottom:12px" id="q" placeholder="Search outlet or market" value="${esc(S.q)}">
+  <div class="card flush"><div class="scroll"><table class="tbl">
+    <thead><tr><th>Outlet</th><th>Market</th><th>Beat</th><th>Salesman</th><th class="n">Sales 30d</th><th class="n">Due</th><th class="n">Limit</th></tr></thead>
+    <tbody>${list.map(o=>{
+      const v30=DB.orders.filter(x=>x.outletId===o.id&&x.date>=daysAgo(30)).reduce((a,x)=>a+x.total,0);
+      const due=outletDue(DB,o.id);
+      return `<tr class="clickable" ${admin?`data-edit="${o.id}"`:''}>
+        <td><b>${esc(o.name)}</b><div class="sub">${esc(o.type)}${o.lat?' · GPS':''}</div></td>
+        <td class="sub">${esc(o.area)}</td><td><span class="tag">${o.beat}</span></td>
+        <td class="sub">${esc(byId(DB.salesmen,o.salesmanId).name||'—')}</td>
+        <td class="n">${inrS(v30)}</td>
+        <td class="n" style="${due>o.creditLimit?'color:var(--red);font-weight:600':''}">${due?inr(due):'—'}</td>
+        <td class="n sub">${inrS(o.creditLimit)}</td></tr>`;}).join('')||
+      '<tr><td colspan="7" class="muted" style="padding:20px">No outlets match.</td></tr>'}
+    </tbody></table></div></div>`;
+}
+
+/* ==================== stock ==================== */
+function vStock(){
+  const d=focusDist();
+  if(!d)return `<div class="empty"><b>No distributor in scope</b></div>`;
+  const rows=stockOf(DB,d), dist=byId(DB.distributors,d);
+  const stockVal=rows.reduce((a,r)=>a+r.close*r.sku.ptd,0);
+  const sec=DB.orders.filter(o=>o.distId===d&&o.date>=daysAgo(30)).reduce((a,o)=>a+o.total,0);
+  const pri=DB.primary.filter(p=>p.distId===d&&p.date>=daysAgo(30)).reduce((a,p)=>a+p.total,0);
+  const risk=rows.filter(r=>r.cover<7);
+  const os=outstanding(DB,i=>i.distId===d);
+  return `<div class="mh"><div><span class="eyebrow">Primary in · secondary out</span><h2>${esc(dist.name)}</h2></div>
+    <div class="right">${S.user.role!=='distributor'&&myDists().length>1?
+      `<select data-f="dist">${myDists().map(x=>`<option value="${x.id}" ${x.id===d?'selected':''}>${esc(x.name)}</option>`).join('')}</select>`:''}
+      <button class="btn g sm" data-act="newPrimary">+ Primary bill</button></div></div>
+  ${risk.length?`<div class="note bad"><b>${risk.length} SKU${risk.length>1?'s':''} below 7 days cover</b> — ${risk.map(r=>esc(r.sku.pack)).join(', ')}. Indent before the next beat cycle.</div>`:''}
+  <div class="kpis">
+    <div class="kpi acc"><div class="k">Stock on hand</div><div class="v">${inrS(stockVal)}</div><div class="s">at PTD</div></div>
+    <div class="kpi"><div class="k">Primary 30d</div><div class="v">${inrS(pri)}</div><div class="s">mill → distributor</div></div>
+    <div class="kpi"><div class="k">Secondary 30d</div><div class="v">${inrS(sec)}</div><div class="s">distributor → retail</div></div>
+    <div class="kpi ${os.total?'warn':''}"><div class="k">Outstanding</div><div class="v">${inrS(os.total)}</div><div class="s">${dist.creditDays}d credit terms</div></div>
+  </div>
+  <div class="card flush"><div class="ch"><b>Stock ledger</b><span class="tag">cover vs 30-day offtake</span></div>
+  <div class="scroll"><table class="tbl"><thead><tr><th>SKU</th><th class="n">In</th><th class="n">Out</th><th class="n">Closing</th>
+    <th class="n">Per day</th><th>Days cover</th><th class="n">Value</th></tr></thead><tbody>
+  ${rows.map(r=>{const p=Math.min(100,r.cover/21*100),c=r.cover<7?'low':r.cover<14?'mid':'';
+    return `<tr><td><b>${esc(r.sku.name)}</b><div class="sub">${esc(r.sku.pack)}</div></td>
+    <td class="n">${r.inQ}</td><td class="n">${r.outQ}</td>
+    <td class="n" style="font-weight:600;${r.close<0?'color:var(--red)':''}">${r.close}</td>
+    <td class="n">${r.rate.toFixed(1)}</td>
+    <td style="min-width:110px"><div class="num" style="font-size:11px">${r.cover>=99?'—':r.cover.toFixed(0)+'d'}</div>
+      <div class="bar"><i class="${c}" style="width:${p}%"></i></div></td>
+    <td class="n">${inrS(r.close*r.sku.ptd)}</td></tr>`;}).join('')}
+  </tbody></table></div></div>
+  <div class="card flush"><div class="ch"><b>Primary bills</b><span class="tag">latest 8</span></div>
+  ${DB.primary.filter(p=>p.distId===d).slice(-8).reverse().map(p=>
+    `<div class="row"><div class="m"><div class="t">${p.date}</div><div class="s">${p.lines.length} SKUs · ${p.lines.reduce((a,l)=>a+l.qty,0)} packs</div></div>
+     <div class="r num" style="font-weight:600">${inr(p.total)}</div></div>`).join('')||'<div class="empty">No primary bills yet.</div>'}</div>`;
+}
+
+/* ==================== reports ==================== */
+function vReports(){
+  const R=[
+    ['exportOrders','Order register','Every order line with outlet, salesman, scheme and net value'],
+    ['exportAgeing','Outstanding ageing','Bill-wise balances with age and due date'],
+    ['exportOutlets','Outlet master','Full outlet list with beat, distributor, credit limit and GPS'],
+    ['exportStock','Stock position','Closing stock and days cover for every distributor and SKU'],
+    ['exportAtt','Attendance register','Punch in/out, hours and distance by salesman'],
+    ['exportPjp','Journey plan adherence','Planned vs actual calls, day by day'],
+    ['exportClaims','Scheme claim statement','Distributor-wise discount and free-goods claim'],
+    ['exportColl','Collection register','Receipts with mode, bill reference and collector']
+  ];
+  return `<div class="mh"><div><span class="eyebrow">CSV, opens in Excel</span><h2>Reports</h2></div></div>
+  <div class="card flush">${R.map(([a,t,s])=>
+    `<div class="row click" data-act="${a}"><div class="m"><div class="t">${t}</div><div class="s">${s}</div></div>
+     <div class="r"><span class="tag g">Download</span></div></div>`).join('')}</div>
+  <div class="card flush"><div class="ch"><b>Server</b></div>
+    <div class="row click" data-act="sync"><div class="m"><div class="t">Connection and sync</div>
+      <div class="s">Share data across phones instead of one device</div></div>
+      <div class="r"><span class="tag">Open</span></div></div>
+    <div class="row click" data-act="syncNow"><div class="m"><div class="t">Sync now</div>
+      <div class="s">Upload waiting changes and fetch new ones</div></div>
+      <div class="r"><span class="tag g">Run</span></div></div></div>
+  <div class="card flush"><div class="ch"><b>Diagnostics</b></div>
+    <div class="row click" data-act="geoDiag"><div class="m"><div class="t">Check location access</div>
+      <div class="s">Why GPS capture is or isn't working on this device</div></div>
+      <div class="r"><span class="tag">Run</span></div></div></div>
+  <div class="card"><h3>Data</h3>
+    <div class="muted" style="margin-bottom:10px">Everything lives on this device. Back it up before clearing browser data.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn ghost sm" data-act="backup">Download backup (JSON)</button>
+      <button class="btn ghost sm" data-act="restore">Restore from backup</button>
+      <button class="btn danger sm" data-act="reset">Reset to demo data</button></div></div>`;
+}
+
+/* ==================== setup ==================== */
+function vSetup(){
+  const t=S.setup;
+  const head=`<div class="mh"><div><span class="eyebrow">Masters</span><h2>Setup</h2></div></div>
+    <div class="chips">${[['skus','Products'],['dists','Distributors'],['men','Salesmen'],['users','Users'],['beat','Beat map']]
+      .map(([k,l])=>`<div class="chip ${t===k?'on':''}" data-setup="${k}">${l}</div>`).join('')}</div>`;
+  if(t==='skus')return head+`<div class="card flush"><div class="scroll"><table class="tbl">
+    <thead><tr><th>Product</th><th>Category</th><th class="n">MRP</th><th class="n">PTR</th><th class="n">PTD</th><th class="n">Margin</th><th></th></tr></thead>
+    <tbody>${DB.skus.map(s=>`<tr><td><b>${esc(s.name)}</b><div class="sub">${esc(s.pack)}</div></td>
+      <td><span class="tag">${esc(s.cat||'—')}</span></td>
+      ${['mrp','ptr','ptd'].map(f=>`<td class="n"><input class="num" data-sku="${s.id}" data-fld="${f}" value="${s[f]}"
+        style="width:64px;text-align:right;border:1px solid var(--line);border-radius:6px;padding:5px"></td>`).join('')}
+      <td class="n sub">${((s.mrp-s.ptr)/s.mrp*100).toFixed(1)}% / ${((s.ptr-s.ptd)/s.ptr*100).toFixed(1)}%</td>
+      <td><button class="btn ghost sm" data-del="sku:${s.id}">×</button></td></tr>`).join('')}
+    </tbody></table></div><div style="padding:12px"><button class="btn g sm" data-act="newSku">+ Add product</button>
+    <div class="muted" style="margin-top:8px">Margin column is retailer margin on MRP, then distributor margin on PTR.</div></div></div>`;
+  if(t==='dists')return head+`<div class="card flush">${DB.distributors.map(d=>
+    `<div class="row"><div class="m"><div class="t">${esc(d.name)}</div>
+      <div class="s">${esc(d.area)} · ${esc(d.phone)} · ${d.creditDays} days credit · ASM ${esc(byId(DB.asms,d.asmId).name||'—')}</div></div>
+     <div class="r"><span class="tag">${DB.outlets.filter(o=>o.distId===d.id).length} outlets</span></div></div>`).join('')}
+    <div style="padding:12px"><button class="btn g sm" data-act="newDist">+ Add distributor</button></div></div>`;
+  if(t==='men')return head+`<div class="card flush">${DB.salesmen.map(m=>
+    `<div class="row"><div class="m"><div class="t">${esc(m.name)}</div>
+      <div class="s">${esc(m.area)} · ${esc(m.phone)} · reports to ${esc(byId(DB.asms,m.asmId).name||'—')}</div></div>
+     <div class="r"><span class="tag">${DB.outlets.filter(o=>o.salesmanId===m.id).length} outlets</span></div></div>`).join('')}
+    <div style="padding:12px"><button class="btn g sm" data-act="newMan">+ Add salesman</button></div></div>`;
+  if(t==='users')return head+`<div class="card flush">${DB.users.map(u=>
+    `<div class="row"><div class="av ${u.role==='admin'?'':u.role==='asm'?'b':u.role==='salesman'?'c':'d'}">${esc(u.name.slice(0,1))}</div>
+     <div class="m"><div class="t">${esc(u.name)}</div><div class="s">${esc(u.title)}</div></div>
+     <div class="r"><span class="tag ${u.role==='admin'?'g':''}">${u.role}</span></div></div>`).join('')}
+    <div style="padding:12px" class="muted">Roles decide what each person sees. An ASM sees only their own salesmen and distributors; a salesman sees only their own outlets.</div></div>`;
+  return head+`<div class="card flush"><div class="scroll"><table class="tbl">
+    <thead><tr><th>Salesman</th>${DAYS.map(d=>`<th class="n">${d}</th>`).join('')}<th class="n">Total</th></tr></thead>
+    <tbody>${DB.salesmen.map(m=>`<tr><td><b>${esc(m.name)}</b></td>
+      ${DAYS.map(d=>{const n=DB.outlets.filter(o=>o.salesmanId===m.id&&o.beat===d).length;
+        return `<td class="n" style="${n?'':'color:var(--ink3)'}">${n||'·'}</td>`;}).join('')}
+      <td class="n" style="font-weight:600">${DB.outlets.filter(o=>o.salesmanId===m.id).length}</td></tr>`).join('')}
+    </tbody></table></div><div style="padding:12px" class="muted">Change a beat day from the outlet record.</div></div>`;
+}
+/* ==================== render root ==================== */
+const VIEW={dash:vDash,beat:vBeat,att:vAtt,pjp:vPjp,orders:vOrders,schemes:vSchemes,targets:vTargets,
+  money:vMoney,coll:vColl,claims:vClaims,outlets:vOutlets,stock:vStock,reports:vReports,setup:vSetup};
+function render(){
+  const allowed=GROUPS[S.user.role].flatMap(g=>g[1]);
+  if(!allowed.includes(S.tab))S.tab=allowed[0];
+  chrome();
+  document.getElementById('main').innerHTML=(VIEW[S.tab]||vDash)();
+  window.scrollTo(0,0);
+}
+
+/* ==================== login ==================== */
+function renderLogin(){
+  const g=[['Management',DB.users.filter(u=>u.role==='admin'||u.role==='asm')],
+           ['Field',DB.users.filter(u=>u.role==='salesman')],
+           ['Distributors',DB.users.filter(u=>u.role==='distributor')]];
+  document.getElementById('login').innerHTML=`<div class="wrap">
+    <div class="lg">Sharda <em>Field</em></div>
+    <div class="sub">${esc(DB.settings.company)}</div>
+    <div style="color:#9db3aa;font-size:13px;margin-top:16px;line-height:1.5">
+      Sales force automation and distributor management for ${esc(DB.settings.brand)}. Pick who you are — each role sees only its own slice of the business.</div>
+    ${g.map(([h,us])=>`<div class="grp"><h4>${h}</h4>${us.map(u=>
+      `<button class="ucard" data-login="${u.id}">
+        <div class="av ${u.role==='admin'?'':u.role==='asm'?'b':u.role==='salesman'?'c':'d'}">${esc(u.name.slice(0,1))}</div>
+        <div><b>${esc(u.name)}</b><span>${esc(u.title)}</span></div></button>`).join('')}</div>`).join('')}
+    <div style="color:#5c7a6d;font-size:11px;margin-top:22px">Demo build — no password. Data is stored on this device only.</div>
+  </div>`;
+}
+function login(userId){
+  S.user=byId(DB.users,userId);
+  if(S.user.role==='salesman')S.me=S.user.ref;
+  if(S.user.role==='distributor')S.dist=S.user.ref;
+  DB.session=userId;save();
+  document.getElementById('login').classList.add('hide');
+  document.getElementById('app').classList.add('on');
+  if(Sync.configured())setTimeout(()=>Sync.run(true),400);
+  S.tab=GROUPS[S.user.role][0][1][0];
+  render();
+}
+function logout(){
+  DB.session=null;save();S.user=null;S.me=null;S.dist=null;
+  document.getElementById('app').classList.remove('on');
+  document.getElementById('login').classList.remove('hide');
+  renderLogin();
+}
+
+/* ==================== sheets ==================== */
+let sheetEl=null;
+let geoBlocked=null;
+function sheet(title,html,after){
+  closeSheet();
+  const b=document.createElement('div');b.className='backdrop';
+  b.innerHTML=`<div class="sheet"><div class="sheet-h"><h3>${esc(title)}</h3><button class="x" data-close>×</button></div>${html}</div>`;
+  document.body.appendChild(b);sheetEl=b;
+  b.addEventListener('click',e=>{if(e.target===b)closeSheet();});
+  if(after)after(b);
+}
+function closeSheet(){if(sheetEl){sheetEl.remove();sheetEl=null;}}
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2000);}
+
+/* ---- more menu ---- */
+function moreMenu(){
+  const g=GROUPS[S.user.role];
+  sheet('All modules',g.map(([h,ks])=>
+    `<div class="muted" style="margin:10px 0 5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase">${h}</div>
+     <div class="card flush">${ks.map(k=>`<div class="row click" data-tab="${k}">
+       <div class="m"><div class="t">${MOD[k]}</div></div><div class="r muted">›</div></div>`).join('')}</div>`).join('')+
+    `<button class="btn ghost wide" data-act="logout" style="margin-top:10px">Sign out</button>`);
+}
+function switchUser(){
+  sheet('Switch user',DB.users.map(u=>
+    `<button class="ucard" style="background:#fff;border-color:var(--line);color:var(--ink)" data-login="${u.id}">
+      <div class="av ${u.role==='admin'?'':u.role==='asm'?'b':u.role==='salesman'?'c':'d'}">${esc(u.name.slice(0,1))}</div>
+      <div><b>${esc(u.name)}</b><span style="color:var(--ink3)">${esc(u.title)}</span></div></button>`).join(''));
+}
+
+/* ---- order entry ---- */
+function openOrder(outletId){
+  const o=byId(DB.outlets,outletId);
+  const existing=DB.orders.find(x=>x.date===today()&&x.outletId===outletId);
+  const q={};if(existing)existing.lines.forEach(l=>q[l.skuId]=l.qty);
+  const due=outletDue(DB,outletId);
+  const over=due>o.creditLimit;
+  const body=`
+    <div class="card" style="margin-bottom:10px"><div style="display:flex;gap:10px;align-items:flex-start">
+      <div style="flex:1"><div style="font-weight:700">${esc(o.name)}</div>
+        <div class="muted">${esc(o.area)} · ${esc(byId(DB.distributors,o.distId).name)}</div>
+        <div class="muted" style="margin-top:3px">Outstanding ${inr(due)} of ${inr(o.creditLimit)} limit</div></div>
+      <button class="btn ghost sm" data-noorder>No order</button></div>
+      ${over?`<div class="note bad" style="margin:10px 0 0">Credit limit exceeded by ${inr(due-o.creditLimit)}. Collect before booking, or book and flag for approval.</div>`:''}
+    </div>
+    <div class="card" id="lines">${DB.skus.map(s=>`
+      <div class="ol"><div class="m"><div class="t">${esc(s.name)} <span class="muted">${esc(s.pack)}</span></div>
+        <div class="s">PTR <span class="num">${inr(s.ptr)}</span> · MRP <span class="num">${inr(s.mrp)}</span></div>
+        <div class="sch" data-sch="${s.id}"></div></div>
+        <div class="step"><button data-m="${s.id}">−</button>
+        <input class="num" data-q="${s.id}" value="${q[s.id]||0}" inputmode="numeric">
+        <button data-p="${s.id}">+</button></div></div>`).join('')}</div>
+    <div id="schBox"></div>
+    <div class="totbar" style="position:static"><div><div class="l">Net order value</div>
+      <div class="v" id="otot">₹0</div><div class="sv" id="odisc"></div></div>
+      <button class="btn g" data-book>${existing?'Update order':'Book order'}</button></div>`;
+  sheet(existing?'Edit order':'Book order',body,b=>{
+    const calc=()=>{
+      const lines=[];b.querySelectorAll('[data-q]').forEach(i=>{const n=+i.value||0;
+        if(n>0)lines.push({skuId:i.dataset.q,qty:n,rate:byId(DB.skus,i.dataset.q).ptr});});
+      return applySchemes(lines,DB.skus,DB.schemes,today());
+    };
+    const upd=()=>{
+      const r=calc();
+      b.querySelector('#otot').textContent=inr(r.net);
+      b.querySelector('#odisc').textContent=r.disc||r.lines.some(l=>l.free)?
+        `saving ${inr(r.disc)}${r.lines.some(l=>l.free)?' + free goods':''}`:'';
+      b.querySelectorAll('[data-sch]').forEach(e=>e.textContent='');
+      r.lines.forEach(l=>{const e=b.querySelector(`[data-sch="${l.skuId}"]`);
+        if(e&&l.scheme)e.textContent=(l.free?`+${l.free} free · `:'')+(l.disc?`−${inr(l.disc)} · `:'')+l.scheme;});
+      b.querySelector('#schBox').innerHTML=r.applied.length?
+        `<div class="note"><b>Schemes applied</b><br>${r.applied.map(esc).join('<br>')}</div>`:'';
+      b.querySelector('[data-book]').disabled=r.net<=0;
+    };
+    b.addEventListener('click',e=>{
+      const p=e.target.dataset.p,m=e.target.dataset.m;
+      if(p||m){const i=b.querySelector(`[data-q="${p||m}"]`);i.value=Math.max(0,(+i.value||0)+(p?1:-1));upd();return;}
+      if(e.target.hasAttribute('data-noorder')){logVisit(outletId,'noorder');closeSheet();render();toast('Marked no order');return;}
+      if(e.target.hasAttribute('data-book')){
+        const r=calc();if(r.net<=0)return;
+        let ord=existing;
+        if(ord){
+          Object.assign(ord,{lines:r.lines,gross:r.gross,disc:r.disc,total:r.net,schemes:r.applied});
+          put('order',ord);
+          const inv=DB.invoices.find(i=>i.orderId===ord.id);if(inv){inv.amount=Math.round(r.net);put('invoice',inv);}
+        }else{
+          ord={id:uid('or'),date:today(),outletId,salesmanId:o.salesmanId,distId:o.distId,
+            lines:r.lines,gross:r.gross,disc:r.disc,total:r.net,schemes:r.applied,status:'booked'};
+          DB.orders.push(put('order',ord));
+          const cd=byId(DB.distributors,o.distId).creditDays||14;
+          DB.invoices.push(put('invoice',{id:uid('in'),date:today(),outletId,distId:o.distId,orderId:ord.id,
+            amount:Math.round(r.net),due:iso(new Date(Date.now()+cd*864e5)),paid:0}));
+        }
+        logVisit(outletId,'order');save();closeSheet();showParchi(ord);render();
+      }
+    });
+    b.addEventListener('input',upd);upd();
+  });
+}
+function logVisit(outletId,status){
+  const o=byId(DB.outlets,outletId);
+  const ex=DB.visits.find(v=>v.date===today()&&v.outletId===outletId);
+  const ts=new Date().toISOString();
+  if(ex){Object.assign(ex,{status,ts});put('visit',ex);}
+  else DB.visits.push(put('visit',{id:uid('v'),date:today(),outletId,salesmanId:o.salesmanId,status,ts}));
+  geo(p=>{const v=DB.visits.find(x=>x.date===today()&&x.outletId===outletId);
+    if(v){v.lat=p.lat;v.lng=p.lng;put('visit',v);geoBlocked=null;save();}},m=>{geoBlocked=m;});
+  save();
+}
+function inFrame(){try{return window.self!==window.top;}catch(e){return true;}}
+function localFile(){return location.protocol==='file:'||location.protocol==='content:';}
+function geoMsg(e){
+  if(e&&e.code===1){
+    if(localFile())return 'This page is open as a local file. Browsers refuse location to file:// pages — there is no website identity to attach the permission to, so no address-bar icon appears. Serve it over https or localhost instead.';
+    if(inFrame())return 'Location is blocked inside this preview. Download the file and open it in a browser tab.';
+    return 'Location permission denied for this site. Reset it from the icon in the address bar, or check that location is switched on for the browser in your device settings.';
+  }
+  if(e&&e.code===2)return 'No location fix available. Move outdoors or turn on device GPS.';
+  if(e&&e.code===3)return 'Location timed out. Try again with a clearer view of the sky.';
+  return 'Location could not be read.';
+}
+function geo(cb,onErr){
+  const fail=m=>{ if(onErr)onErr(m); else toast(m); };
+  if(!navigator.geolocation)return fail('This browser has no location support.');
+  if(!window.isSecureContext)return fail('Location needs a secure page (https or localhost).');
+  navigator.geolocation.getCurrentPosition(
+    p=>cb({lat:+p.coords.latitude.toFixed(5),lng:+p.coords.longitude.toFixed(5),acc:Math.round(p.coords.accuracy||0)}),
+    e=>fail(geoMsg(e)),
+    {enableHighAccuracy:true,timeout:15000,maximumAge:30000});
+}
+function parseLatLng(s){
+  if(!s)return null;
+  let m=s.match(/@(-?\d+\.\d+),\s*(-?\d+\.\d+)/)            // maps /@lat,lng
+    ||s.match(/[?&]q=(-?\d+\.\d+),\s*(-?\d+\.\d+)/)          // ?q=lat,lng
+    ||s.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/)              // !3dlat!4dlng
+    ||s.match(/^\s*(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)\s*$/);    // plain pair
+  if(!m)return null;
+  const lat=+m[1],lng=+m[2];
+  if(Math.abs(lat)>90||Math.abs(lng)>180)return null;
+  return {lat:+lat.toFixed(5),lng:+lng.toFixed(5)};
+}
+function geoVerdict(){
+  if(!navigator.geolocation)return ['bad','This browser has no location support. Enter coordinates by hand.'];
+  if(localFile())return ['bad','Opened as a local file. This is the blocker — location will never be granted to a file:// page, however the permissions are set. Serve the file over localhost or https and it will start working.'];
+  if(inFrame())return ['bad','Running inside a frame. Preview panels are sandboxed and location is refused. Open the file as its own browser tab.'];
+  if(!window.isSecureContext)return ['bad','Not a secure page. Location needs https or localhost.'];
+  return ['ok','This setup can receive location. If it still fails, the permission was denied for this site, or location is off in your device settings.'];
+}
+function geoDiag(){
+  const [v,msg]=geoVerdict();
+  const rows=[
+    ['Page address',location.protocol+'//'+(location.host||'local file')],
+    ['Secure page',window.isSecureContext?'yes':'no'],
+    ['Inside a frame',inFrame()?'yes':'no'],
+    ['Location API',navigator.geolocation?'available':'missing']
+  ];
+  const body=`<div class="note ${v==='ok'?'':'bad'}"><b>${v==='ok'?'Setup looks fine':'Location cannot work here'}</b><br>${esc(msg)}</div>
+    <div class="card flush">${rows.map(([k,val])=>
+      `<div class="row"><div class="m"><div class="t">${k}</div></div><div class="r muted">${esc(val)}</div></div>`).join('')}
+      <div class="row"><div class="m"><div class="t">Permission state</div></div><div class="r muted" id="permState">checking…</div></div></div>
+    <button class="btn g wide" id="tryGeo">Test location now</button>
+    <div id="geoOut" class="muted" style="margin-top:10px"></div>
+    <div class="card" style="margin-top:12px"><h3>Getting a real address</h3>
+      <div class="muted" style="line-height:1.6">
+      <b>Quickest test —</b> in the folder holding this file run <span class="num">python3 -m http.server 8000</span>, then open <span class="num">http://localhost:8000/sharda-field.html</span>. Localhost counts as secure, so GPS works.<br><br>
+      <b>For the field —</b> salesmen need it on their own phones over https. Any static host works: Cloudflare Pages, Netlify, GitHub Pages. Upload this one file and share the link.<br><br>
+      Until then, coordinates can be typed or pasted from a Google Maps link on every outlet record, and attendance still logs the time.</div></div>`;
+  sheet('Location access',body,b=>{
+    const out=b.querySelector('#geoOut');
+    if(navigator.permissions&&navigator.permissions.query){
+      navigator.permissions.query({name:'geolocation'})
+        .then(r=>{b.querySelector('#permState').textContent=r.state;})
+        .catch(()=>{b.querySelector('#permState').textContent='not reported';});
+    }else b.querySelector('#permState').textContent='not reported';
+    b.querySelector('#tryGeo').onclick=()=>{
+      out.textContent='Asking the browser…';
+      geo(p=>{out.innerHTML=`<span style="color:var(--greenD);font-weight:600">Got it — ${p.lat}, ${p.lng} (±${p.acc} m)</span>`;},
+          m=>{out.innerHTML=`<span style="color:var(--red);font-weight:600">${esc(m)}</span>`;});
+    };
+  });
+}
+
+/* ---- parchi ---- */
+function showParchi(o){
+  const out=byId(DB.outlets,o.outletId);
+  const free=o.lines.filter(l=>l.free);
+  sheet('Order slip',`<div class="parchi">
+    <div class="ph"><b>${esc(DB.settings.brand)}</b><span>${o.date} · ${o.id.slice(-5).toUpperCase()}</span></div>
+    <div style="font-size:12px;margin-bottom:7px"><b>${esc(out.name)}</b> — ${esc(out.area)}<br>
+      <span class="muted">${esc(byId(DB.distributors,o.distId).name)} · ${esc(byId(DB.salesmen,o.salesmanId).name)}</span></div>
+    ${o.lines.map(l=>{const s=byId(DB.skus,l.skuId);
+      return `<div class="pl"><div class="d">${esc(s.name)} ${esc(s.pack)}</div><div class="q">${l.qty}</div><div class="a">${inr(l.qty*l.rate)}</div></div>`
+      +(l.disc?`<div class="pl free"><div class="d">  scheme — ${esc(l.scheme||'')}</div><div class="q"></div><div class="a">−${inr(l.disc)}</div></div>`:'');}).join('')}
+    ${free.map(l=>`<div class="pl free"><div class="d">  free — ${esc(byId(DB.skus,l.skuId).pack)}</div><div class="q">${l.free}</div><div class="a">0</div></div>`).join('')}
+    <div class="pt"><div>Gross</div><div class="a">${inr(o.gross)}</div></div>
+    ${o.disc?`<div class="pt" style="border-top:0;margin-top:0;padding-top:0"><div>Scheme</div><div class="a">−${inr(o.disc)}</div></div>`:''}
+    <div class="pt big"><div>NET</div><div class="a">${inr(o.total)}</div></div>
+    <div class="stamp">BOOKED</div></div>
+    <div style="display:flex;gap:8px;margin-top:14px" class="no-print">
+      <button class="btn ghost" style="flex:1" data-act="print">Print</button>
+      <button class="btn g" style="flex:1" data-close>Done</button></div>`);
+}
+
+/* ---- outlet ---- */
+function openOutlet(id){
+  const o=id?byId(DB.outlets,id):{id:uid('o'),name:'',owner:'',phone:'',area:'',type:'kirana',gst:'',
+    distId:myDists()[0]?.id,salesmanId:myMen()[0]?.id,beat:'Mon',creditLimit:30000,lat:null,lng:null,created:today(),status:'active'};
+  sheet(id?'Edit outlet':'New outlet',`
+    <div class="f"><label>Outlet name</label><input id="fname" value="${esc(o.name)}" placeholder="Sharma Kirana Store"></div>
+    <div class="grid2"><div class="f"><label>Owner</label><input id="fowner" value="${esc(o.owner)}"></div>
+      <div class="f"><label>Phone</label><input id="fphone" value="${esc(o.phone)}" inputmode="tel"></div></div>
+    <div class="grid2"><div class="f"><label>Market</label><input id="farea" value="${esc(o.area)}"></div>
+      <div class="f"><label>Type</label><select id="ftype">${['kirana','general','selfservice','wholesale','bakery']
+        .map(t=>`<option ${o.type===t?'selected':''}>${t}</option>`).join('')}</select></div></div>
+    <div class="grid2"><div class="f"><label>Distributor</label><select id="fdist">${myDists()
+        .map(d=>`<option value="${d.id}" ${o.distId===d.id?'selected':''}>${esc(d.name)}</option>`).join('')}</select></div>
+      <div class="f"><label>Salesman</label><select id="fman">${myMen()
+        .map(m=>`<option value="${m.id}" ${o.salesmanId===m.id?'selected':''}>${esc(m.name)}</option>`).join('')}</select></div></div>
+    <div class="grid2"><div class="f"><label>Beat day</label><select id="fbeat">${DAYS
+        .map(d=>`<option ${o.beat===d?'selected':''}>${d}</option>`).join('')}</select></div>
+      <div class="f"><label>Credit limit ₹</label><input id="flimit" class="num" value="${o.creditLimit}" inputmode="numeric"></div></div>
+    <div class="f"><label>GST number</label><input id="fgst" value="${esc(o.gst)}" placeholder="optional"></div>
+    <div class="f"><label>Shop location</label>
+      <button class="btn ghost" id="geo" style="width:100%">${o.lat?'Recapture GPS at the shop':'Capture GPS at the shop'}</button>
+      <div class="grid2" style="margin-top:8px">
+        <input id="flat" class="num" value="${o.lat==null?'':o.lat}" placeholder="Latitude" inputmode="decimal">
+        <input id="flng" class="num" value="${o.lng==null?'':o.lng}" placeholder="Longitude" inputmode="decimal"></div>
+      <input id="fmaps" placeholder="or paste a Google Maps link" style="margin-top:8px">
+      <div class="muted" id="geoNote" style="margin-top:6px">${o.lat?`Saved ${o.lat}, ${o.lng} — <a href="https://maps.google.com/?q=${o.lat},${o.lng}" target="_blank" rel="noopener">open in Maps</a>`:'Type coordinates by hand if GPS is unavailable.'}</div>
+    </div>
+    <button class="btn g wide" id="fsave">${id?'Save changes':'Add outlet'}</button>
+    ${id?`<button class="btn danger wide" id="fdel" style="margin-top:8px">Delete outlet</button>`:''}`,b=>{
+    const note=b.querySelector('#geoNote');
+    const setLL=(lat,lng,extra)=>{
+      b.querySelector('#flat').value=lat; b.querySelector('#flng').value=lng;
+      note.innerHTML=`Set to ${lat}, ${lng}${extra||''} — <a href="https://maps.google.com/?q=${lat},${lng}" target="_blank" rel="noopener">open in Maps</a>`;
+    };
+    b.querySelector('#geo').onclick=()=>{
+      note.textContent='Asking the browser for location…';
+      geo(p=>setLL(p.lat,p.lng,` (±${p.acc} m)`),
+          m=>{note.innerHTML=`<span style="color:var(--red)">${esc(m)}</span> Enter the coordinates by hand instead.`;});
+    };
+    b.querySelector('#fmaps').oninput=ev=>{
+      const p=parseLatLng(ev.target.value);
+      if(p)setLL(p.lat,p.lng,' from the link');
+    };
+    b.querySelector('#fsave').onclick=()=>{
+      const n=b.querySelector('#fname').value.trim();if(!n)return toast('Name is required');
+      const la=b.querySelector('#flat').value.trim(), ln=b.querySelector('#flng').value.trim();
+      Object.assign(o,{name:n,owner:b.querySelector('#fowner').value,phone:b.querySelector('#fphone').value,
+        area:b.querySelector('#farea').value,type:b.querySelector('#ftype').value,distId:b.querySelector('#fdist').value,
+        salesmanId:b.querySelector('#fman').value,beat:b.querySelector('#fbeat').value,gst:b.querySelector('#fgst').value,
+        creditLimit:+b.querySelector('#flimit').value||0,
+        lat:la===''?null:+la, lng:ln===''?null:+ln});
+      put('outlet',o);
+      if(!id)DB.outlets.push(o);
+      save();closeSheet();render();toast(id?'Outlet updated':'Outlet added');
+    };
+    const d=b.querySelector('#fdel');
+    if(d)d.onclick=()=>{if(!confirm('Delete this outlet?'))return;
+      put('outlet',byId(DB.outlets,id),true);
+      DB.outlets=DB.outlets.filter(x=>x.id!==id);save();closeSheet();render();toast('Outlet deleted');};
+  });
+}
+
+/* ---- primary bill ---- */
+function openPrimary(){
+  sheet('New primary bill',`
+    <div class="f"><label>Distributor</label><select id="pd">${myDists()
+      .map(d=>`<option value="${d.id}" ${d.id===focusDist()?'selected':''}>${esc(d.name)}</option>`).join('')}</select></div>
+    <div class="f"><label>Bill date</label><input type="date" id="pdate" value="${today()}"></div>
+    <div class="card">${DB.skus.map(s=>`<div class="ol"><div class="m"><div class="t">${esc(s.name)} <span class="muted">${esc(s.pack)}</span></div>
+      <div class="s">PTD <span class="num">${inr(s.ptd)}</span></div></div>
+      <div class="step"><button data-m="${s.id}">−</button><input class="num" data-q="${s.id}" value="0" inputmode="numeric">
+      <button data-p="${s.id}">+</button></div></div>`).join('')}</div>
+    <div class="totbar" style="position:static"><div><div class="l">Bill value</div><div class="v" id="ptot">₹0</div></div>
+      <button class="btn g" id="psave">Post bill</button></div>`,b=>{
+    const upd=()=>{let t=0;b.querySelectorAll('[data-q]').forEach(i=>t+=(+i.value||0)*byId(DB.skus,i.dataset.q).ptd);
+      b.querySelector('#ptot').textContent=inr(t);b.querySelector('#psave').disabled=t<=0;};
+    b.addEventListener('click',e=>{const p=e.target.dataset.p,m=e.target.dataset.m;
+      if(p||m){const i=b.querySelector(`[data-q="${p||m}"]`);i.value=Math.max(0,(+i.value||0)+(p?10:-10));upd();}});
+    b.addEventListener('input',upd);
+    b.querySelector('#psave').onclick=()=>{
+      const lines=[];b.querySelectorAll('[data-q]').forEach(i=>{const q=+i.value||0;
+        if(q>0)lines.push({skuId:i.dataset.q,qty:q,rate:byId(DB.skus,i.dataset.q).ptd});});
+      if(!lines.length)return;
+      DB.primary.push(put('primary',{id:uid('pi'),date:b.querySelector('#pdate').value,distId:b.querySelector('#pd').value,
+        lines,total:lines.reduce((a,l)=>a+l.qty*l.rate,0)}));
+      save();closeSheet();render();toast('Primary bill posted');};
+    upd();
+  });
+}
+
+/* ---- collection ---- */
+function openCollection(outletId){
+  const s=sc();
+  const outs=DB.outlets.filter(o=>s.outlets.includes(o.id)&&outletDue(DB,o.id)>0);
+  const pick=outletId||outs[0]?.id;
+  if(!pick)return toast('Nothing outstanding to collect');
+  const bills=()=>DB.invoices.filter(i=>i.outletId===cur&&i.amount-i.paid>0).sort((a,b)=>a.date<b.date?-1:1);
+  let cur=pick;
+  sheet('Record collection',`
+    <div class="f"><label>Outlet</label><select id="co">${outs.map(o=>
+      `<option value="${o.id}" ${o.id===pick?'selected':''}>${esc(o.name)} — ${inr(outletDue(DB,o.id))}</option>`).join('')}</select></div>
+    <div class="f"><label>Against bill</label><select id="cb"></select></div>
+    <div class="grid2"><div class="f"><label>Amount ₹</label><input id="ca" class="num" inputmode="numeric"></div>
+      <div class="f"><label>Mode</label><select id="cm"><option>cash</option><option>upi</option><option>cheque</option></select></div></div>
+    <div class="f"><label>Date</label><input type="date" id="cd" value="${today()}"></div>
+    <button class="btn g wide" id="csave">Record receipt</button>`,b=>{
+    const fill=()=>{cur=b.querySelector('#co').value;
+      const bl=bills();
+      b.querySelector('#cb').innerHTML=bl.map(i=>
+        `<option value="${i.id}">${i.id.slice(-5).toUpperCase()} · ${i.date.slice(5)} · bal ${inr(i.amount-i.paid)}</option>`).join('')
+        ||'<option value="">On account</option>';
+      const f=bl[0];b.querySelector('#ca').value=f?f.amount-f.paid:'';};
+    b.querySelector('#co').onchange=fill;
+    b.querySelector('#cb').onchange=()=>{const i=byId(DB.invoices,b.querySelector('#cb').value);
+      if(i.id)b.querySelector('#ca').value=i.amount-i.paid;};
+    b.querySelector('#csave').onclick=()=>{
+      const amt=+b.querySelector('#ca').value||0;if(amt<=0)return toast('Enter an amount');
+      const iid=b.querySelector('#cb').value;
+      const inv=byId(DB.invoices,iid);
+      if(inv.id){inv.paid=Math.min(inv.amount,inv.paid+amt);put('invoice',inv);}
+      DB.collections.push(put('collection',{id:uid('co'),invoiceId:iid||null,outletId:cur,date:b.querySelector('#cd').value,
+        amount:amt,mode:b.querySelector('#cm').value,salesmanId:byId(DB.outlets,cur).salesmanId}));
+      save();closeSheet();render();toast('Receipt recorded');};
+    fill();
+  });
+}
+
+/* ---- scheme ---- */
+function openScheme(){
+  sheet('New scheme',`
+    <div class="f"><label>Scheme name</label><input id="sn" placeholder="Atta 10 kg — 10+1 free"></div>
+    <div class="f"><label>Type</label><select id="st">
+      <option value="qty">Quantity slab — % off</option><option value="freegoods">Free goods — buy N get M</option>
+      <option value="value">Bill value — % off</option><option value="flat">Flat % on selected SKUs</option></select></div>
+    <div class="f"><label>Applies to</label><select id="ss" multiple size="5">${DB.skus.map(s=>
+      `<option value="${s.id}">${esc(s.name)} ${esc(s.pack)}</option>`).join('')}</select>
+      <div class="muted" style="margin-top:4px">Leave empty for all SKUs. Bill-value schemes ignore this.</div></div>
+    <div class="grid2"><div class="f"><label>Trigger (packs or ₹)</label><input id="sm" class="num" value="10" inputmode="numeric"></div>
+      <div class="f"><label>Benefit (% or free packs)</label><input id="sb" class="num" value="5" inputmode="numeric"></div></div>
+    <div class="grid2"><div class="f"><label>From</label><input type="date" id="sf" value="${today()}"></div>
+      <div class="f"><label>To</label><input type="date" id="sto" value="${daysAgo(-30)}"></div></div>
+    <button class="btn g wide" id="sv">Create scheme</button>`,b=>{
+    b.querySelector('#sv').onclick=()=>{
+      const n=b.querySelector('#sn').value.trim();if(!n)return toast('Name is required');
+      const t=b.querySelector('#st').value, ben=+b.querySelector('#sb').value||0;
+      DB.schemes.push(put('scheme',{id:uid('sc'),name:n,type:t,
+        skuIds:[...b.querySelector('#ss').selectedOptions].map(o=>o.value),
+        min:+b.querySelector('#sm').value||1,
+        pct:t==='freegoods'?0:ben, free:t==='freegoods'?ben:0,
+        active:true,from:b.querySelector('#sf').value,to:b.querySelector('#sto').value}));
+      save();closeSheet();render();toast('Scheme created');};
+  });
+}
+
+/* ---- targets ---- */
+function openTargets(){
+  const mo=S.month;
+  sheet('Set targets — '+monLabel(mo),
+    `<div class="muted" style="margin-bottom:10px">Monthly value target per salesman, and pack target per SKU.</div>
+     <div class="card"><h3>By salesman (₹)</h3>${myMen().map(m=>{
+       const t=DB.targets.find(x=>x.month===mo&&x.salesmanId===m.id);
+       return `<div class="f"><label>${esc(m.name)}</label><input class="num" data-tm="${m.id}" value="${t?t.value:0}" inputmode="numeric"></div>`;}).join('')}</div>
+     <div class="card"><h3>By SKU (packs)</h3>${DB.skus.map(s=>{
+       const t=DB.targets.find(x=>x.month===mo&&x.skuId===s.id);
+       return `<div class="f"><label>${esc(s.name)} ${esc(s.pack)}</label><input class="num" data-ts="${s.id}" value="${t?t.qty:0}" inputmode="numeric"></div>`;}).join('')}</div>
+     <button class="btn g wide" id="tv">Save targets</button>`,b=>{
+    b.querySelector('#tv').onclick=()=>{
+      b.querySelectorAll('[data-tm]').forEach(i=>{const id=i.dataset.tm;
+        let t=DB.targets.find(x=>x.month===mo&&x.salesmanId===id);
+        if(!t){t={id:uid('tg'),month:mo,salesmanId:id,skuId:null,value:0,qty:0};DB.targets.push(t);}
+        t.value=+i.value||0;put('target',t);});
+      b.querySelectorAll('[data-ts]').forEach(i=>{const id=i.dataset.ts;
+        let t=DB.targets.find(x=>x.month===mo&&x.skuId===id);
+        if(!t){t={id:uid('tg'),month:mo,salesmanId:null,skuId:id,value:0,qty:0};DB.targets.push(t);}
+        t.qty=+i.value||0;put('target',t);});
+      save();closeSheet();render();toast('Targets saved');};
+  });
+}
+
+/* ---- simple masters ---- */
+function openSimple(kind){
+  const cfg={dist:{t:'New distributor',f:[['name','Name'],['area','Area'],['phone','Phone'],['creditDays','Credit days']]},
+             man:{t:'New salesman',f:[['name','Name'],['area','Area'],['phone','Phone']]},
+             sku:{t:'New product',f:[['name','Product'],['pack','Pack size'],['cat','Category'],['mrp','MRP'],['ptr','PTR'],['ptd','PTD']]}}[kind];
+  sheet(cfg.t,cfg.f.map(([k,l])=>`<div class="f"><label>${l}</label><input data-k="${k}"></div>`).join('')+
+    `<button class="btn g wide" id="ok">Add</button>`,b=>{
+    b.querySelector('#ok').onclick=()=>{
+      const r={id:uid(kind)};
+      b.querySelectorAll('[data-k]').forEach(i=>{const v=i.value.trim();r[i.dataset.k]=(v!==''&&!isNaN(v))?+v:v;});
+      if(!r.name)return toast('Name is required');
+      if(kind==='dist'){r.asmId=DB.asms[0]?.id;DB.distributors.push(put('distributor',r));}
+      if(kind==='man'){r.asmId=DB.asms[0]?.id;DB.salesmen.push(put('salesman',r));}
+      if(kind==='sku'){r.kg=parseFloat(r.pack)||1;DB.skus.push(put('sku',r));}
+      save();closeSheet();render();toast('Added');};
+  });
+}
+
+/* ==================== csv ==================== */
+function csv(name,rows){
+  const s=rows.map(r=>r.map(c=>`"${String(c==null?'':c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  dl(name,new Blob(['\ufeff'+s],{type:'text/csv;charset=utf-8'}));
+  toast(name+' downloaded');
+}
+function dl(name,blob){
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();a.remove();
+}
+const EXPORT={
+  exportOrders(){const r=[['Date','Outlet','Market','Distributor','Salesman','Product','Pack','Qty','Free','Rate','Gross','Scheme discount','Scheme']];
+    myOrders().forEach(o=>o.lines.forEach(l=>{const s=byId(DB.skus,l.skuId),ot=byId(DB.outlets,o.outletId);
+      r.push([o.date,ot.name,ot.area,byId(DB.distributors,o.distId).name,byId(DB.salesmen,o.salesmanId).name,
+        s.name,s.pack,l.qty,l.free||0,l.rate,l.qty*l.rate,l.disc||0,l.scheme||'']);}));
+    csv('orders.csv',r);},
+  exportAgeing(){const os=outstanding(DB,i=>sc().outlets.includes(i.outletId));
+    csv('outstanding-ageing.csv',[['Bill','Date','Due','Age days','Outlet','Distributor','Amount','Paid','Balance','Overdue']]
+      .concat(os.list.map(i=>[i.id.slice(-5).toUpperCase(),i.date,i.due,i.age,byId(DB.outlets,i.outletId).name,
+        byId(DB.distributors,i.distId).name,i.amount,i.paid,i.bal,i.overdue?'YES':''])));},
+  exportOutlets(){csv('outlets.csv',[['Outlet','Owner','Phone','Market','Type','Beat','Distributor','Salesman','Credit limit','Outstanding','GST','Lat','Lng']]
+    .concat(myOutlets().map(o=>[o.name,o.owner,o.phone,o.area,o.type,o.beat,byId(DB.distributors,o.distId).name,
+      byId(DB.salesmen,o.salesmanId).name,o.creditLimit,outletDue(DB,o.id),o.gst,o.lat,o.lng])));},
+  exportStock(){const r=[['Distributor','Product','Pack','Primary in','Secondary out','Closing','Per day','Days cover','Value at PTD']];
+    myDists().forEach(d=>stockOf(DB,d.id).forEach(x=>r.push([d.name,x.sku.name,x.sku.pack,x.inQ,x.outQ,x.close,
+      x.rate.toFixed(2),x.cover>=99?'':x.cover.toFixed(1),Math.round(x.close*x.sku.ptd)])));
+    csv('stock-position.csv',r);},
+  exportAtt(){csv('attendance.csv',[['Date','Salesman','Punch in','Punch out','Hours','Km','Lat','Lng']]
+    .concat(DB.attendance.filter(a=>sc().men.includes(a.salesmanId)).map(a=>[a.date,byId(DB.salesmen,a.salesmanId).name,
+      fmtTime(a.inTs),fmtTime(a.outTs),a.outTs?((new Date(a.outTs)-new Date(a.inTs))/36e5).toFixed(2):'',a.km,a.inLat,a.inLng])));},
+  exportPjp(){const r=[['Salesman','Date','Day','Planned calls','Completed','Deviations','Adherence %']];
+    myMen().forEach(m=>pjpMonth(DB,m.id,S.month).forEach(c=>{if(c.sun||c.future)return;
+      r.push([m.name,c.date,dayName(c.date),c.plan,c.done,c.dev,pct(c.done,c.plan)]);}));
+    csv('journey-plan.csv',r);},
+  exportClaims(){csv('scheme-claims.csv',[['Distributor','Month','Orders','Gross','Discount','Free goods value','Total claim']]
+    .concat(claims(DB,S.month).filter(c=>sc().dists.includes(c.dist.id))
+      .map(c=>[c.dist.name,S.month,c.orders,Math.round(c.gross),c.disc,Math.round(c.freeVal),Math.round(c.total)])));},
+  exportColl(){csv('collections.csv',[['Date','Outlet','Bill','Mode','Collected by','Amount']]
+    .concat(DB.collections.filter(c=>sc().outlets.includes(c.outletId))
+      .map(c=>[c.date,byId(DB.outlets,c.outletId).name,c.invoiceId?c.invoiceId.slice(-5).toUpperCase():'on account',
+        c.mode,byId(DB.salesmen,c.salesmanId).name||'',c.amount])));}
+};
+
+/* ==================== events ==================== */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-login],[data-tab],[data-day],[data-act],[data-close],[data-setup],[data-order-for],[data-edit],[data-slip],[data-collect],[data-godist],[data-togglescheme],[data-del]');
+  if(!t)return;
+  const d=t.dataset;
+  if(d.close!==undefined)return closeSheet();
+  if(d.login)return closeSheet(),login(d.login);
+  if(d.tab){S.tab=d.tab;closeSheet();return render();}
+  if(d.day){S.day=d.day;return render();}
+  if(d.setup){S.setup=d.setup;return render();}
+  if(d.orderFor)return openOrder(d.orderFor);
+  if(d.edit)return openOutlet(d.edit);
+  if(d.slip)return showParchi(byId(DB.orders,d.slip));
+  if(d.collect)return openCollection(d.collect);
+  if(d.godist){S.dist=d.godist;S.tab='stock';return render();}
+  if(d.togglescheme){const s=byId(DB.schemes,d.togglescheme);s.active=!s.active;put('scheme',s);save();return render();}
+  if(d.del){const [k,id]=d.del.split(':');
+    if(k==='sku'&&confirm('Remove this product?')){put('sku',byId(DB.skus,id),true);DB.skus=DB.skus.filter(x=>x.id!==id);save();render();}
+    return;}
+  const a=d.act;
+  if(EXPORT[a])return EXPORT[a]();
+  ({
+    logout,more:moreMenu,switch:switchUser,print:()=>window.print(),geoDiag,sync:openSync,syncNow:()=>Sync.run(),
+    newOutlet:()=>openOutlet(null),newPrimary:openPrimary,newColl:()=>openCollection(null),
+    newScheme:openScheme,setTargets:openTargets,newDist:()=>openSimple('dist'),
+    newMan:()=>openSimple('man'),newSku:()=>openSimple('sku'),
+    punchIn:()=>{const m=focusMan();
+      DB.attendance.push(put('attendance',{id:uid('at'),date:today(),salesmanId:m,inTs:new Date().toISOString(),outTs:null,km:0}));
+      geo(p=>{const a=attToday(DB,m);if(a){a.inLat=p.lat;a.inLng=p.lng;put('attendance',a);geoBlocked=null;save();render();}},
+          m2=>{geoBlocked=m2;toast(m2);render();});
+      save();render();toast('Punched in');},
+    punchOut:()=>{const a=attToday(DB,focusMan());if(!a)return;
+      a.outTs=new Date().toISOString();put('attendance',a);save();render();toast('Day closed');},
+    backup:()=>{dl('sharda-field-backup-'+today()+'.json',new Blob([JSON.stringify(DB)],{type:'application/json'}));toast('Backup downloaded');},
+    restore:()=>{const i=document.createElement('input');i.type='file';i.accept='.json';
+      i.onchange=()=>{const f=i.files[0];if(!f)return;const r=new FileReader();
+        r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.skus)throw 0;DB=d;save();render();toast('Backup restored');}
+          catch(err){toast('That file could not be read');}};r.readAsText(f);};i.click();},
+    reset:()=>{if(!confirm('Replace everything with fresh demo data?'))return;
+      const u=DB.session;DB=seed();DB.session=u;save();render();toast('Demo data reset');}
+  }[a]||(()=>{}))();
+});
+document.addEventListener('change',e=>{
+  const f=e.target.dataset.f;
+  if(f==='me'){S.me=e.target.value||null;return render();}
+  if(f==='dist'){S.dist=e.target.value||null;return render();}
+  if(f==='range'){S.range=+e.target.value;return render();}
+  if(f==='month'){S.month=e.target.value;return render();}
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='q'){S.q=e.target.value;const p=e.target.selectionStart;render();
+    const n=document.getElementById('q');if(n){n.focus();n.setSelectionRange(p,p);}}
+  if(e.target.dataset.sku){const s=byId(DB.skus,e.target.dataset.sku);s[e.target.dataset.fld]=+e.target.value||0;put('sku',s);save();}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();});
+
+/* ==================== boot ==================== */
+(async function(){
+  DB=await Store.load();
+  if(!DB||DB.v!==2||!DB.skus){DB=seed();await Store.save(DB);}
+  DB.settings=DB.settings||{brand:'Sharda Bhog',company:'Sharda Fresh Foods Pvt Ltd'};
+  DB.outbox=DB.outbox||[];
+  renderLogin();
+  if(DB.session&&byId(DB.users,DB.session).id)login(DB.session);
+  setInterval(()=>{if(Sync.configured()&&(DB.outbox||[]).length)Sync.run(true);},60000);
+  window.addEventListener('online',()=>{if(Sync.configured())Sync.run(true);});
+})();
+</script>
+</body>
+</html>

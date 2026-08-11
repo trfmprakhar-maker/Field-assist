@@ -1,0 +1,16 @@
+name = "sharda-field-api"
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sharda-field"
+database_id = "PUT_YOUR_DATABASE_ID_HERE"   # printed by: wrangler d1 create sharda-field
+
+[vars]
+ALLOWED_ORIGIN = "*"   # tighten to your Pages URL once deployed
+
+# Secrets are NOT set here. Set them with wrangler secret put:
+#   AUTH_SECRET  - signs login tokens (any long random string)
+#   ADMIN_KEY    - guards /api/admin/* endpoints
+#   PIN_SALT     - salts PIN hashes; must stay "sharda" if you use the seeded PINs
