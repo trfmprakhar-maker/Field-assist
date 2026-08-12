@@ -5,7 +5,7 @@ compatibility_date = "2026-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "sharda-field"
-database_id = "PUT_YOUR_DATABASE_ID_HERE"   # printed by: wrangler d1 create sharda-field
+database_id = "7fcabaab-952c-4892-83c3-e620b3221122"   # printed by: wrangler d1 create sharda-field
 
 [vars]
 ALLOWED_ORIGIN = "*"   # tighten to your Pages URL once deployed
